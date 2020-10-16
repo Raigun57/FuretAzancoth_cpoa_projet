@@ -19,7 +19,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			URL fxmlURL=getClass().getResource("/fxml/TD4.fxml");
+			URL fxmlURL=getClass().getResource("/fxml/Projet_Produit.fxml");
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
 			Node root = fxmlLoader.load();
 			
@@ -27,7 +27,7 @@ public class Main extends Application {
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Ma première fenêtre JavaFX");
+			primaryStage.setTitle("Ma premi�re fenetre JavaFX");
 			primaryStage.show();
 			
 		} catch (Exception e) {

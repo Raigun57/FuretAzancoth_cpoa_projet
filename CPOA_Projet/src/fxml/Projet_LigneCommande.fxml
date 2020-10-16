@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -13,47 +12,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlleur.CtrlProduit">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="305.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlleur.CtrlProduit">
    <children>
       <GridPane prefHeight="251.0" prefWidth="599.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.0" minWidth="10.0" prefWidth="96.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="291.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="10.0" prefWidth="92.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.0" minWidth="10.0" prefWidth="67.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="158.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="118.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="67.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="37.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="37.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Nom :" GridPane.halignment="RIGHT">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label text="Description :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <Label text="Tarif :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Label text="Catégorie :" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Label text="Produit :" GridPane.halignment="RIGHT">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtNom" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.columnSpan="2">
-               <GridPane.margin>
-                  <Insets left="10.0" />
-               </GridPane.margin></TextField>
-            <TextArea fx:id="txtDescription" prefHeight="135.0" prefWidth="375.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" />
-               </GridPane.margin></TextArea>
             <TextField fx:id="txtTarif" maxWidth="-Infinity" prefHeight="26.0" prefWidth="74.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets left="10.0" />
+                  <Insets left="10.0" right="10.0" />
                </GridPane.margin></TextField>
-            <ChoiceBox fx:id="cbxCategorie" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <ChoiceBox fx:id="cbxCategorie" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin></ChoiceBox>
@@ -62,14 +45,17 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <Label text="Quantité :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="txtTarif1" maxWidth="-Infinity" prefHeight="26.0" prefWidth="74.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="99.0" prefWidth="594.0">
          <children>
             <Button fx:id="btnCreer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerModele" text="Créer">
-               <font>
-                  <Font size="14.0" />
-               </font>
                <FlowPane.margin>
                   <Insets />
                </FlowPane.margin>
@@ -85,6 +71,9 @@
                   <Insets />
                </FlowPane.margin></Label>
          </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
       </FlowPane>
    </children>
 </VBox>

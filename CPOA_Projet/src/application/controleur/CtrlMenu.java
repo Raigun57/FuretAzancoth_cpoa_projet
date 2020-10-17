@@ -27,7 +27,7 @@ import metier.Produit;
 
 public class CtrlMenu implements Initializable {
 
-	// Composant du menu
+	// Composants du menu
 	@FXML
 	private TabPane tabPaneMenu;
 	@FXML
@@ -38,6 +38,18 @@ public class CtrlMenu implements Initializable {
 	private Tab tabProduit;
 	@FXML
 	private Tab tabCommande;
+
+	// Composants de la partie Categorie
+	@FXML
+	private TextField txtNomCateg;
+	@FXML
+	private TextField txtVisuelCateg;
+	@FXML
+	private Button btnAjouterCateg;
+	@FXML
+	private Button btnVoirCategorie;
+	@FXML
+	private Label labelCategorie;
 
 	// Composants de la partie Produit
 	@FXML
@@ -57,7 +69,63 @@ public class CtrlMenu implements Initializable {
 
 	// Méthodes pour la partie Produit
 	@FXML
-	public void creerModele() {
+	public void creerCategorie() {
+		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoMySQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
+
+		String nomCategorie = txtNomCateg.getText().trim();
+		String visuelCategorie = txtVisuelCateg.getText().trim();
+		boolean ok = true;
+
+		if (nomCategorie.isEmpty()) {
+			this.labelCategorie.setText("Le nom est vide");
+			this.labelCategorie.setTextFill(Color.web("#bb0b0b"));
+			ok = false;
+		}
+
+		if (visuelCategorie.isEmpty()) {
+			this.labelCategorie.setText("Le visuel est vide");
+			this.labelCategorie.setTextFill(Color.web("#bb0b0b"));
+			ok = false;
+		}
+
+		if (ok == true) {
+			this.labelCategorie.setText(txtNomCateg.getText().trim() + ", " + txtVisuelCateg.getText().trim());
+			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
+			try {
+				daoLM.getCategorieDAO().create(categ);
+				// daoMySQL.getProduitDAO().create(produit);
+				System.out.println(daoLM.getCategorieDAO().findAll());
+				// System.out.println(daoMySQL.getProduitDAO().findAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@FXML
+	public void voirCategorie() {
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesCategorie.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			Stage stage = new Stage();
+
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setTitle("Visualisation des donnees");
+			stage.setScene(new Scene(root, 600, 400));
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// Méthodes pour la partie Produit
+	@FXML
+	public void creerProduit() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
 		DAOFactory daoMySQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
 
@@ -94,15 +162,14 @@ public class CtrlMenu implements Initializable {
 		}
 
 		if (ok == true) {
-			this.labelProduit.setText(toString());
+			this.labelProduit.setText(
+					txtNom.getText().trim() + " (" + cbxCategorie.getValue() + ")" + ", " + txtTarif.getText().trim());
 			Produit produit = new Produit(nom, description, tarif, "visuel", itemCategorie.getId());
 			try {
-				/*
-				 * daoLM.getProduitDAO().create(produit);
-				 * daoMySQL.getProduitDAO().create(produit);
-				 * System.out.println(daoLM.getProduitDAO().findAll());
-				 * System.out.println(daoMySQL.getProduitDAO().findAll());
-				 */
+				daoLM.getProduitDAO().create(produit);
+				// daoMySQL.getProduitDAO().create(produit);
+				System.out.println(daoLM.getProduitDAO().findAll());
+				// System.out.println(daoMySQL.getProduitDAO().findAll());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -110,6 +177,7 @@ public class CtrlMenu implements Initializable {
 
 	}
 
+	@FXML
 	public void voirProduit() {
 		try {
 			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesProduit.fxml");
@@ -139,8 +207,4 @@ public class CtrlMenu implements Initializable {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return txtNom.getText().trim() + " (" + cbxCategorie.getValue() + ")" + ", " + txtTarif.getText().trim();
-	}
 }

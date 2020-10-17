@@ -155,7 +155,7 @@
                               </GridPane>
                               <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="96.0" prefWidth="600.0">
                                  <children>
-                                    <Button fx:id="btnCreer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerModele" text="Créer">
+                                    <Button fx:id="btnCreer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Créer">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -197,7 +197,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txtNom3" maxWidth="-Infinity" prefHeight="23.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                                    <TextField fx:id="txtNomCateg" maxWidth="-Infinity" prefHeight="23.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
                                        <GridPane.margin>
                                           <Insets left="10.0" />
                                        </GridPane.margin>
@@ -207,21 +207,29 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField maxWidth="-Infinity" prefHeight="25.0" prefWidth="163.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <TextField fx:id="txtVisuelCateg" maxWidth="-Infinity" prefHeight="25.0" prefWidth="163.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" />
                                        </GridPane.margin>
                                     </TextField>
                                  </children>
                               </GridPane>
-                              <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="47.0" prefWidth="611.0">
+                              <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="163.0" prefWidth="600.0">
                                  <children>
-                                    <Button fx:id="btnCreer1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerModele" text="Créer">
+                                    <Button fx:id="btnAjouterCateg" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerCategorie" text="Ajouter">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                        <FlowPane.margin>
                                           <Insets />
+                                       </FlowPane.margin>
+                                    </Button>
+                                    <Button fx:id="btnVoirCategorie" mnemonicParsing="false" onAction="#voirCategorie" text="Voir les catégories">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <FlowPane.margin>
+                                          <Insets left="30.0" />
                                        </FlowPane.margin>
                                     </Button>
                                  </children>
@@ -231,7 +239,7 @@
                               </FlowPane>
                               <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="26.0" prefWidth="602.0">
                                  <children>
-                                    <Label fx:id="labelProduit11" text="Label" />
+                                    <Label fx:id="labelCategorie" text="Label" />
                                  </children>
                               </FlowPane>
                            </children>
@@ -244,7 +252,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="600.0">
                            <children>
                               <GridPane prefHeight="251.0" prefWidth="599.0">
                                  <columnConstraints>
@@ -309,7 +317,7 @@
                               </GridPane>
                               <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="153.0" prefWidth="600.0">
                                  <children>
-                                    <Button fx:id="btnAjouter" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerModele" text="Ajouter">
+                                    <Button fx:id="btnAjouter" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerProduit" text="Ajouter">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -325,15 +333,19 @@
                                           <Insets left="30.0" />
                                        </FlowPane.margin>
                                     </Button>
-                                    <Label fx:id="labelProduit" text="Label">
-                                       <FlowPane.margin>
-                                          <Insets top="50.0" />
-                                       </FlowPane.margin>
-                                    </Label>
                                  </children>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
+                              </FlowPane>
+                              <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="126.0" prefWidth="600.0">
+                                 <children>
+                                    <Label fx:id="labelProduit" text="Label">
+                                       <FlowPane.margin>
+                                          <Insets top="30.0" />
+                                       </FlowPane.margin>
+                                    </Label>
+                                 </children>
                               </FlowPane>
                            </children>
                         </VBox>
@@ -382,7 +394,7 @@
                               </GridPane>
                               <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="47.0" prefWidth="611.0">
                                  <children>
-                                    <Button fx:id="btnCreer2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerModele" text="Créer">
+                                    <Button fx:id="btnCreer2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Créer">
                                        <font>
                                           <Font size="14.0" />
                                        </font>

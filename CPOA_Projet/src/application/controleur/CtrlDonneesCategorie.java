@@ -65,8 +65,8 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	@FXML
 	public void suppModele() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Suppression d'un client");
-		alert.setContentText("Voulez vous vraiment supprimer ce client ?");
+		alert.setTitle("Suppression d'une categorie");
+		alert.setContentText("Voulez vous vraiment supprimer ce categorie ?");
 		Optional<ButtonType> result = alert.showAndWait();
 
 		Categorie categ = tabViewCategorie.getSelectionModel().getSelectedItem();

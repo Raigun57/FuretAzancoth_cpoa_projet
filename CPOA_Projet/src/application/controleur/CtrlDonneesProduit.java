@@ -2,6 +2,7 @@ package application.controleur;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import dao.factory.DAOFactory;
@@ -9,7 +10,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -67,8 +71,27 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 
 	}
 
+	@FXML
 	public void suppModele() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Suppression d'un produit");
+		alert.setContentText("Voulez vous vraiment supprimer ce produit ?");
+		Optional<ButtonType> result = alert.showAndWait();
 
+		Produit produit = tabViewProduit.getSelectionModel().getSelectedItem();
+		if (result.get() == ButtonType.OK) {
+			try {
+				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().delete(produit);
+				// Vide la table de donnees
+				tabViewProduit.getItems().clear();
+				// Rerempli la table de donnees
+				tabViewProduit.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll());
+			} catch (SQLException e) {
+				e.getMessage();
+			}
+		} else
+			tabViewProduit.getSelectionModel().clearSelection();
 	}
 
 	@Override

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.CtrlDonneesClient">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesClient">
    <children>
       <TableView fx:id="tabViewClient" prefHeight="293.0" prefWidth="600.0">
          <columns>
@@ -25,6 +25,14 @@
       </TableView>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
          <children>
+            <Button fx:id="btnAjouterClient" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterClient" text="Ajouter">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets right="30.0" />
+               </FlowPane.margin>
+            </Button>
             <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifModele" text="Modifier">
                <font>
                   <Font size="13.0" />
@@ -32,7 +40,7 @@
             </Button>
             <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#suppModele" text="Supprimer">
                <FlowPane.margin>
-                  <Insets left="50.0" />
+                  <Insets left="30.0" />
                </FlowPane.margin>
                <font>
                   <Font size="13.0" />

@@ -400,9 +400,14 @@
                                           <Insets left="10.0" />
                                        </GridPane.margin>
                                     </ChoiceBox>
+                                    <Label text="Ecrivez la sous le format jj/mm/aaaa" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="125.0" />
+                                       </GridPane.margin>
+                                    </Label>
                                  </children>
                               </GridPane>
-                              <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="47.0" prefWidth="611.0">
+                              <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="47.0" prefWidth="600.0">
                                  <children>
                                     <Button fx:id="btnAjouterCommande" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerCommande" text="Ajouter">
                                        <font>
@@ -425,9 +430,9 @@
                                     <Insets />
                                  </VBox.margin>
                               </FlowPane>
-                              <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="26.0" prefWidth="602.0">
+                              <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="176.0" prefWidth="600.0">
                                  <children>
-                                    <Label fx:id="labelCommande" text="Label" />
+                                    <Label fx:id="labelCommande" prefWidth="28.0" text="Label" />
                                  </children>
                               </FlowPane>
                            </children>

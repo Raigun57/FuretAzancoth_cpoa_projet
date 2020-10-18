@@ -2,6 +2,7 @@ package application.controleur;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import dao.factory.DAOFactory;
@@ -9,7 +10,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -67,8 +71,27 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 
 	}
 
+	@FXML
 	public void suppModele() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Suppression d'un client");
+		alert.setContentText("Voulez vous vraiment supprimer ce client ?");
+		Optional<ButtonType> result = alert.showAndWait();
 
+		Client client = tabViewClient.getSelectionModel().getSelectedItem();
+		if (result.get() == ButtonType.OK) {
+			try {
+				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().delete(client);
+				// Vide la table de donnees
+				tabViewClient.getItems().clear();
+				// Rerempli la table de donnees
+				tabViewClient.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());
+			} catch (SQLException e) {
+				e.getMessage();
+			}
+		} else
+			tabViewClient.getSelectionModel().clearSelection();
 	}
 
 	@Override

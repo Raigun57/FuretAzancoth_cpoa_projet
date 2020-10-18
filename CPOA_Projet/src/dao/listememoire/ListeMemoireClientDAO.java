@@ -1,11 +1,10 @@
 package dao.listememoire;
 
-import metier.Client;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import dao.modele.ClientDAO;
+import metier.Client;
 
 public class ListeMemoireClientDAO implements ClientDAO {
 
@@ -27,8 +26,9 @@ public class ListeMemoireClientDAO implements ClientDAO {
 		this.donnees = new ArrayList<Client>();
 
 		this.donnees.add(new Client(1, "LAROCHE", "Pierre"));
+		this.donnees.add(new Client(2, "PASCAL", "Pedro", "64FTY678", "banana", 66, "rue de la paella", 12888, "Mexico",
+				"Mexique"));
 	}
-
 
 	@Override
 	public boolean create(Client objet) {
@@ -40,22 +40,22 @@ public class ListeMemoireClientDAO implements ClientDAO {
 			objet.setId(objet.getId() + 1);
 		}
 		boolean ok = this.donnees.add(objet);
-		
+
 		return ok;
 	}
 
 	@Override
 	public boolean update(Client objet) {
-		
+
 		// Ne fonctionne que si l'objet m�tier est bien fait...
 		int idx = this.donnees.indexOf(objet);
 		if (idx == -1) {
 			throw new IllegalArgumentException("Tentative de modification d'un client inexistant");
 		} else {
-			
+
 			this.donnees.set(idx, objet);
 		}
-		
+
 		return true;
 	}
 
@@ -63,7 +63,7 @@ public class ListeMemoireClientDAO implements ClientDAO {
 	public boolean delete(Client objet) {
 
 		Client supprime;
-		
+
 		// Ne fonctionne que si l'objet m�tier est bien fait...
 		int idx = this.donnees.indexOf(objet);
 		if (idx == -1) {
@@ -71,7 +71,7 @@ public class ListeMemoireClientDAO implements ClientDAO {
 		} else {
 			supprime = this.donnees.remove(idx);
 		}
-		
+
 		return objet.equals(supprime);
 	}
 

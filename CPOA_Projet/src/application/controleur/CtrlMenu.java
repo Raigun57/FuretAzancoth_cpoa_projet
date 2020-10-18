@@ -2,6 +2,8 @@ package application.controleur;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import dao.Persistance;
@@ -24,6 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import metier.Categorie;
 import metier.Client;
+import metier.Commande;
 import metier.Produit;
 
 public class CtrlMenu implements Initializable {
@@ -93,6 +96,18 @@ public class CtrlMenu implements Initializable {
 	private Button btnAjouter;
 	@FXML
 	private Button btnVoirProduit;
+
+	// Composants de la partie Commande
+	@FXML
+	private TextField txtDate;
+	@FXML
+	private ChoiceBox<Client> cbxClient;
+	@FXML
+	private Label labelCommande;
+	@FXML
+	private Button btnAjouteCommmande;
+	@FXML
+	private Button btnVoirCommande;
 
 	// Méthodes pour la partie Client
 	@FXML
@@ -252,7 +267,8 @@ public class CtrlMenu implements Initializable {
 
 			Stage stage = new Stage();
 
-			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initModality(Modality.APPLICATION_MODAL); // Permet de bloquer l'interaction avec la fenetre
+															// precedente
 			stage.setTitle("Visualisation des donnees");
 			stage.setScene(new Scene(root, 600, 400));
 			stage.show();
@@ -336,11 +352,83 @@ public class CtrlMenu implements Initializable {
 		}
 	}
 
+	// Méthodes pour la partie Categorie
+	@FXML
+	public void creerCommande() {
+		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoMySQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
+
+		String date = txtDate.getText().trim();
+		LocalDate dateFormate = null;
+
+		DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+		Client itemClient = cbxClient.getSelectionModel().getSelectedItem();
+		boolean ok = true;
+
+		if (date.isEmpty()) {
+			this.labelCommande.setText("La date est vide");
+			this.labelCommande.setTextFill(Color.RED);
+			ok = false;
+		}
+
+		try {
+			dateFormate = LocalDate.parse(date, formatage);
+		} catch (Exception e) {
+			e.getMessage();
+			this.labelCommande.setText("La date est mal ecrite");
+			this.labelCommande.setTextFill(Color.RED);
+			ok = false;
+		}
+
+		if (cbxClient.getSelectionModel().isEmpty()) {
+			this.labelProduit.setText("Le client n'est pas choisi");
+			this.labelProduit.setTextFill(Color.RED);
+			ok = false;
+		}
+
+		if (ok == true) {
+			this.labelCommande.setText(txtDate.getText().trim() + ", " + cbxClient.getValue());
+			this.labelCommande.setTextFill(Color.BLACK);
+
+			Commande commande = new Commande(dateFormate, itemClient.getId(), null);
+			try {
+				daoLM.getCommandeDAO().create(commande);
+				// daoMySQL.getCommandeDAO().create(produit);
+				System.out.println(daoLM.getCommandeDAO().findAll());
+				// System.out.println(daoMySQL.getCommandeDAO().findAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@FXML
+	public void voirCommande() {
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesCommande.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			Stage stage = new Stage();
+
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setTitle("Visualisation des donnees");
+			stage.setScene(new Scene(root, 600, 400));
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		DAOFactory dao = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
 		try {
 			this.cbxCategorie.setItems(FXCollections.observableArrayList(dao.getCategorieDAO().findAll()));
+			this.cbxClient.setItems(FXCollections.observableArrayList(dao.getClientDAO().findAll()));
 		} catch (Exception e) {
 			System.out.println("Probleme avec la ChoiceBox");
 			e.printStackTrace();

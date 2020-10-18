@@ -175,9 +175,7 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", identifiant=" + identifiant + ", mdp="
-				+ mdp + ", numero=" + numero + ", rue=" + rue + ", codePostal=" + codePostal + ", ville=" + ville
-				+ ", pays=" + pays + "]";
+		return prenom.concat(" " + nom);
 	}
 
 	@Override

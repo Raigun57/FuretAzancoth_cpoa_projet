@@ -119,15 +119,12 @@ public class CtrlFicheClient {
 			try {
 				daoLM.getClientDAO().create(client);
 				// daoMySQL.getClientDAO().create(Client);
-				System.out.println(daoLM.getClientDAO().findAll());
-				// System.out.println(daoMySQL.getClientDAO().findAll());
+				Stage stage = (Stage) btnValider.getScene().getWindow();
+				stage.close();
 			} catch (Exception e) {
 				e.getMessage();
 			}
 		}
-
-		Stage stage = (Stage) btnValider.getScene().getWindow();
-		stage.close();
 
 	}
 

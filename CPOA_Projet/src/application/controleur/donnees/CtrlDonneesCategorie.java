@@ -1,5 +1,6 @@
 package application.controleur.donnees;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -9,7 +10,10 @@ import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,6 +21,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import metier.Categorie;
 
 public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categorie> {
@@ -56,6 +62,25 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 
 		this.tabViewCategorie.getSelectionModel().selectedItemProperty().addListener(this);
 
+	}
+
+	@FXML
+	public void ajouterCategorie() {
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/fiche/FicheCategorie.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			Stage stage = new Stage();
+
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setTitle("Ajouter une categorie");
+			stage.setScene(new Scene(root, 600, 400));
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void modifModele() {

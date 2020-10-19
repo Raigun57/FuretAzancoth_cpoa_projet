@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.fiche.CtrlFicheCommande">
    <children>
       <GridPane prefHeight="148.0" prefWidth="600.0">
          <columnConstraints>
@@ -52,9 +52,9 @@
             </Label>
          </children>
       </GridPane>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="47.0" prefWidth="600.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="113.0" prefWidth="600.0">
          <children>
-            <Button fx:id="btnAjouterCommande" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerCommande" text="Ajouter">
+            <Button fx:id="btnValider" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#valider" text="Valider">
                <font>
                   <Font size="14.0" />
                </font>
@@ -62,7 +62,7 @@
                   <Insets />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnVoirCommande" mnemonicParsing="false" onAction="#voirCommande" text="Voir les commandes">
+            <Button fx:id="btnRetour" mnemonicParsing="false" onAction="#retour" text="Retour">
                <font>
                   <Font size="14.0" />
                </font>
@@ -75,9 +75,9 @@
             <Insets />
          </VBox.margin>
       </FlowPane>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="176.0" prefWidth="600.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="140.0" prefWidth="600.0">
          <children>
-            <Label fx:id="labelCommande" prefWidth="28.0" text="Label" />
+            <Label fx:id="labelCommande" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="154.0" text="Label" />
          </children>
       </FlowPane>
    </children>

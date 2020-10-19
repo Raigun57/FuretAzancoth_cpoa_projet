@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.fiche.CtrlFicheProduit">
    <children>
       <GridPane prefHeight="251.0" prefWidth="599.0">
          <columnConstraints>
@@ -78,7 +78,7 @@
       </GridPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="153.0" prefWidth="600.0">
          <children>
-            <Button fx:id="btnAjouter" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#creerProduit" text="Ajouter">
+            <Button fx:id="btnValider" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#valider" text="Valider">
                <font>
                   <Font size="14.0" />
                </font>
@@ -86,9 +86,9 @@
                   <Insets />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnVoirProduit" mnemonicParsing="false" onAction="#voirProduit" text="Voir les produits">
+            <Button fx:id="btnRetour" mnemonicParsing="false" onAction="#retour" text="Retour">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
                <FlowPane.margin>
                   <Insets left="30.0" />

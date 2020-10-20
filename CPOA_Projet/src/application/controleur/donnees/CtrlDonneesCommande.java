@@ -80,7 +80,17 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setTitle("Ajouter une commande");
 			stage.setScene(new Scene(root, 600, 400));
-			stage.show();
+			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
+
+			try {
+				// Vide la table de donnees
+				tabViewCommande.getItems().clear();
+				// Rerempli la table de donnees
+				tabViewCommande.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll());
+			} catch (SQLException e) {
+				e.getMessage();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

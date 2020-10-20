@@ -76,7 +76,18 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setTitle("Ajouter une categorie");
 			stage.setScene(new Scene(root, 600, 400));
-			stage.show();
+			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
+
+			try {
+				// Vide la table de donnees
+				tabViewCategorie.getItems().clear();
+				// Rerempli la table de donnees
+				tabViewCategorie.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

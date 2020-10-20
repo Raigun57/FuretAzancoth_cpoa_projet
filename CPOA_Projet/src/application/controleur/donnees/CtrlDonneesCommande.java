@@ -64,7 +64,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 	}
 
-	public void modifModele() {
+	public void modifCommande() {
 
 	}
 
@@ -98,7 +98,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	}
 
 	@FXML
-	public void suppModele() {
+	public void suppCommande() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Suppression d'une commande");
 		alert.setContentText("Voulez vous vraiment supprimer ce commande ?");

@@ -73,7 +73,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 
 	}
 
-	public void modifModele() {
+	public void modifProduit() {
 
 	}
 
@@ -107,7 +107,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	}
 
 	@FXML
-	public void suppModele() {
+	public void suppProduit() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Suppression d'un produit");
 		alert.setContentText("Voulez vous vraiment supprimer ce produit ?");

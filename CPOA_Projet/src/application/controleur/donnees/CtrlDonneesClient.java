@@ -102,12 +102,13 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		}
 	}
 
-	public void modifModele() {
+	@FXML
+	public void modifClient() {
 
 	}
 
 	@FXML
-	public void suppModele() {
+	public void suppClient() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Suppression d'un client");
 		alert.setContentText("Voulez vous vraiment supprimer ce client ?");

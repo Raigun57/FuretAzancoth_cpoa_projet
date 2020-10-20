@@ -33,12 +33,12 @@
                   <Insets right="30.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifModele" text="Modifier">
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifProduit" text="Modifier">
                <font>
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#suppModele" text="Supprimer">
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#suppProduit" text="Supprimer">
                <FlowPane.margin>
                   <Insets left="30.0" />
                </FlowPane.margin>

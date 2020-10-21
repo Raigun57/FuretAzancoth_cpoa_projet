@@ -3,6 +3,7 @@ package application.controleur.donnees;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -29,7 +30,7 @@ import metier.Categorie;
 public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categorie> {
 
 	@FXML
-	public TableView<Categorie> tabViewCategorie;
+	private TableView<Categorie> tabViewCategorie;
 	@FXML
 	private TableColumn<Categorie, Integer> colId = new TableColumn<>("ID");
 	@FXML
@@ -156,6 +157,21 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	public void changed(ObservableValue<? extends Categorie> observable, Categorie oldValue, Categorie newValue) {
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
+	}
+
+	// Methode pour recuperer tous les titres des categories
+	public ArrayList<String> getNom() {
+		ArrayList<String> listeNom = new ArrayList<String>();
+		for (int i = 0; i < tabViewCategorie.getItems().size(); i++) {
+			listeNom.add(tabViewCategorie.getItems().get(i).getTitre());
+		}
+		return listeNom;
+	}
+
+	// Methode pour donner la table des categories a la fiche ajouter en laissant la
+	// table en privee
+	public TableView<Categorie> getTabViewCategorie() {
+		return tabViewCategorie;
 	}
 
 }

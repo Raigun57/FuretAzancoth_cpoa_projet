@@ -3,6 +3,9 @@ package application.controleur.donnees;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -158,6 +161,32 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	public void changed(ObservableValue<? extends Commande> observable, Commande oldValue, Commande newValue) {
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
+	}
+
+	// Methode pour recuperer toutes les dates des commandes
+	public ArrayList<String> getDate() {
+		ArrayList<String> listeDate = new ArrayList<String>();
+		DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		for (int i = 0; i < tabViewCommande.getItems().size(); i++) {
+			LocalDate date = tabViewCommande.getItems().get(i).getDate();
+			listeDate.add(formatage.format(date));
+		}
+		return listeDate;
+	}
+
+	// Methode pour recuperer tous les clients des commandes
+	public ArrayList<Integer> getClient() {
+		ArrayList<Integer> listeClient = new ArrayList<Integer>();
+		for (int i = 0; i < tabViewCommande.getItems().size(); i++) {
+			listeClient.add(tabViewCommande.getItems().get(i).getIdClient());
+		}
+		return listeClient;
+	}
+
+	// Methode pour donner la table des categories a la fiche ajouter en laissant la
+	// table en privee
+	public TableView<Commande> getTabViewCommande() {
+		return tabViewCommande;
 	}
 
 }

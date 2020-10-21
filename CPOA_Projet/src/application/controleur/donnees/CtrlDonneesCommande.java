@@ -163,7 +163,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		this.btnModifier.setDisable(newValue == null);
 	}
 
-	// Methode pour recuperer toutes les dates des commandes
+	// Methode pour recuperer la date de toutes les commandes
 	public ArrayList<String> getDate() {
 		ArrayList<String> listeDate = new ArrayList<String>();
 		DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -174,7 +174,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		return listeDate;
 	}
 
-	// Methode pour recuperer tous les clients des commandes
+	// Methode pour recuperer le client de toutes les commandes
 	public ArrayList<Integer> getClient() {
 		ArrayList<Integer> listeClient = new ArrayList<Integer>();
 		for (int i = 0; i < tabViewCommande.getItems().size(); i++) {
@@ -183,7 +183,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		return listeClient;
 	}
 
-	// Methode pour donner la table des categories a la fiche ajouter en laissant la
+	// Methode pour donner la table des commandes a la fiche ajouter en laissant la
 	// table en privee
 	public TableView<Commande> getTabViewCommande() {
 		return tabViewCommande;

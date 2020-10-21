@@ -3,6 +3,7 @@ package application.controleur.donnees;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -167,6 +168,22 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	public void changed(ObservableValue<? extends Client> observable, Client oldValue, Client newValue) {
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
+	}
+
+	// Methode pour recuperer le nom et le prenom de tous les clients
+	public ArrayList<String> getNomPrenom() {
+		ArrayList<String> listeNomPrenom = new ArrayList<String>();
+		for (int i = 0; i < tabViewClient.getItems().size(); i++) {
+			listeNomPrenom.add( // On concate le nom et le prenom pour faire une methode au lieu de deux
+					tabViewClient.getItems().get(i).getNom().concat(" " + tabViewClient.getItems().get(i).getPrenom()));
+		}
+		return listeNomPrenom;
+	}
+
+	// Methode pour donner la table des categories a la fiche ajouter en laissant la
+	// table en privee
+	public TableView<Client> getTabViewClient() {
+		return tabViewClient;
 	}
 
 }

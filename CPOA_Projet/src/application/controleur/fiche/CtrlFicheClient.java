@@ -1,8 +1,16 @@
 package application.controleur.fiche;
 
+import java.io.IOException;
+import java.net.URL;
+
+import application.controleur.donnees.CtrlDonneesClient;
 import dao.Persistance;
 import dao.factory.DAOFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -111,6 +119,24 @@ public class CtrlFicheClient {
 			ok = false;
 		}
 
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesClient.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			CtrlDonneesClient controleur = fxmlLoader.getController();
+
+			for (int i = 0; i < controleur.getTabViewClient().getItems().size(); i++) {
+				if (nomClient.concat(" " + prenom).equalsIgnoreCase(controleur.getNomPrenom().get(i))) {
+					alerteDoublon();
+					ok = false;
+				}
+			}
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		if (ok == true) {
 			this.labelClient.setText(txtNomClient.getText().trim() + ", " + txtPrenom.getText().trim() + ", "
 					+ txtIdentifiant.getText().trim() + txtMdp.getText().trim());
@@ -133,6 +159,13 @@ public class CtrlFicheClient {
 	public void retour() {
 		Stage stage = (Stage) btnRetour.getScene().getWindow();
 		stage.close();
+	}
+
+	public void alerteDoublon() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Doublon");
+		alert.setContentText("Ce client existe deja");
+		alert.show();
 	}
 
 }

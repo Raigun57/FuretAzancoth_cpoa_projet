@@ -159,7 +159,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		this.btnModifier.setDisable(newValue == null);
 	}
 
-	// Methode pour recuperer tous les titres des categories
+	// Methode pour recuperer le titre de toutes les categories
 	public ArrayList<String> getNom() {
 		ArrayList<String> listeNom = new ArrayList<String>();
 		for (int i = 0; i < tabViewCategorie.getItems().size(); i++) {

@@ -3,6 +3,7 @@ package application.controleur.donnees;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -166,6 +167,30 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	public void changed(ObservableValue<? extends Produit> observable, Produit oldValue, Produit newValue) {
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
+	}
+
+	// Methode pour recuperer le nom de toutes les produits
+	public ArrayList<String> getNom() {
+		ArrayList<String> listeNom = new ArrayList<String>();
+		for (int i = 0; i < tabViewProduit.getItems().size(); i++) {
+			listeNom.add(tabViewProduit.getItems().get(i).getNom());
+		}
+		return listeNom;
+	}
+
+	// Methode pour recuperer la categorie de tous les produits
+	public ArrayList<Integer> getIdCateg() {
+		ArrayList<Integer> listeNom = new ArrayList<Integer>();
+		for (int i = 0; i < tabViewProduit.getItems().size(); i++) {
+			listeNom.add(tabViewProduit.getItems().get(i).getIdCateg());
+		}
+		return listeNom;
+	}
+
+	// Methode pour donner la table des produits a la fiche ajouter en laissant la
+	// table en privee
+	public TableView<Produit> getTabViewProduit() {
+		return tabViewProduit;
 	}
 
 }

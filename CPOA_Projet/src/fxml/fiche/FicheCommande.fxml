@@ -77,7 +77,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="140.0" prefWidth="600.0">
          <children>
-            <Label fx:id="labelCommande" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="154.0" text="Label" />
+            <Label fx:id="labelCommande" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="285.0" text="Label" />
          </children>
       </FlowPane>
    </children>

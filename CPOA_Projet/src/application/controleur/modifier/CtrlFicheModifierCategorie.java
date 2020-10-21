@@ -49,7 +49,7 @@ public class CtrlFicheModifierCategorie {
 			this.labelCategorie.setTextFill(Color.BLACK);
 			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
 			try {
-				daoLM.getCategorieDAO().create(categ);
+				daoLM.getCategorieDAO().update(categ);
 				// daoMySQL.getProduitDAO().create(produit);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
@@ -64,6 +64,12 @@ public class CtrlFicheModifierCategorie {
 	public void retour() {
 		Stage stage = (Stage) btnRetour.getScene().getWindow();
 		stage.close();
+	}
+
+	// methode qui initialise les donnees
+	public void initDonnees(Categorie c) {
+		txtNomCateg.setText(c.getTitre());
+		txtVisuelCateg.setText(c.getVisuel());
 	}
 
 }

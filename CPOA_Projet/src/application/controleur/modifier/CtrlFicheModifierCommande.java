@@ -101,4 +101,13 @@ public class CtrlFicheModifierCommande implements Initializable {
 		}
 	}
 
+	// methode qui initialise les donnees
+	public void initDonnees(Commande c) {
+		LocalDate date = c.getDate();
+		DateTimeFormatter formatage = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		txtDate.setText(formatage.format(date)); // Permet d'afficher correctement la date sur l'application
+		cbxClient.getSelectionModel().select(c.getIdClient() - 1); // On doit enlever 1 sinon l'index n'est pas
+																	// equivalent a l'objet selectionné
+	}
+
 }

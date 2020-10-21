@@ -135,4 +135,23 @@ public class CtrlFicheModifierClient {
 		stage.close();
 	}
 
+	// methode qui initialise les donnees
+	public void initDonnees(Client c) {
+		txtNomClient.setText(c.getNom());
+		txtPrenom.setText(c.getPrenom());
+		txtIdentifiant.setText(c.getIdentifiant());
+		txtMdp.setText(c.getMdp());
+
+		int numero = c.getNumero();
+		txtNumero.setText(Integer.toString(numero));
+
+		txtRue.setText(c.getRue());
+
+		int codePostal = c.getCodePostal();
+		txtCodePostal.setText(Integer.toString(codePostal));
+
+		txtVille.setText(c.getVille());
+		txtPays.setText(c.getPays());
+	}
+
 }

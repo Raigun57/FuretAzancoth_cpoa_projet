@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.controleur.modifier.CtrlFicheModifierCategorie;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,7 +29,7 @@ import metier.Categorie;
 public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categorie> {
 
 	@FXML
-	private TableView<Categorie> tabViewCategorie;
+	public TableView<Categorie> tabViewCategorie;
 	@FXML
 	private TableColumn<Categorie, Integer> colId = new TableColumn<>("ID");
 	@FXML
@@ -85,11 +86,9 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 				tabViewCategorie.getItems()
 						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -100,6 +99,12 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			URL fxmlURL = getClass().getResource("/fxml/modifier/FicheModifierCategorie.fxml");
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
 			Parent root = fxmlLoader.load();
+
+			// Appelle du controleur de la fiche modifier
+			CtrlFicheModifierCategorie controleur = fxmlLoader.getController();
+
+			// Initialisation des composants avec les données de la ligne récupérer
+			controleur.initDonnees(tabViewCategorie.getSelectionModel().getSelectedItem());
 
 			Stage stage = new Stage();
 

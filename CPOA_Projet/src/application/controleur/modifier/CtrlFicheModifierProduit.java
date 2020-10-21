@@ -107,4 +107,14 @@ public class CtrlFicheModifierProduit implements Initializable {
 		}
 	}
 
+	// methode qui initialise les donnees
+	public void initDonnees(Produit p) {
+		txtNom.setText(p.getNom());
+		txtDescription.setText(p.getDescription());
+		Double tarif = p.getTarif();
+		txtTarif.setText(tarif.toString());
+		cbxCategorie.getSelectionModel().select(p.getIdCateg() - 1); // On doit enlever 1 sinon l'index n'est pas
+																		// equivalent a l'objet selectionné
+	}
+
 }

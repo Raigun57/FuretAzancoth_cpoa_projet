@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.controleur.modifier.CtrlFicheModifierCommande;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -64,7 +65,40 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 	}
 
+	@FXML
 	public void modifCommande() {
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/modifier/FicheModifierCommande.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			// Appelle du controleur de la fiche modifier
+			CtrlFicheModifierCommande controleur = fxmlLoader.getController();
+
+			// Initialisation des composants avec les données de la ligne récupérer
+			controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem());
+
+			Stage stage = new Stage();
+
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setTitle("Modifier une categorie");
+			stage.setScene(new Scene(root, 600, 400));
+			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
+
+			try {
+				// Vide la table de donnees
+				tabViewCommande.getItems().clear();
+				// Rerempli la table de donnees
+				tabViewCommande.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

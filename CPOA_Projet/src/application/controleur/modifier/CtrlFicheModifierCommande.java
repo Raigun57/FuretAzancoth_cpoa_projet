@@ -32,6 +32,8 @@ public class CtrlFicheModifierCommande implements Initializable {
 	@FXML
 	private Button btnRetour;
 
+	private int id;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -70,9 +72,9 @@ public class CtrlFicheModifierCommande implements Initializable {
 			this.labelCommande.setText(txtDate.getText().trim() + ", " + cbxClient.getValue());
 			this.labelCommande.setTextFill(Color.BLACK);
 
-			Commande commande = new Commande(dateFormate, itemClient.getId(), null);
+			Commande commande = new Commande(getSelectedId(), dateFormate, itemClient.getId(), null);
 			try {
-				daoLM.getCommandeDAO().create(commande);
+				daoLM.getCommandeDAO().update(commande);
 				// daoMySQL.getCommandeDAO().create(produit);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
@@ -108,6 +110,16 @@ public class CtrlFicheModifierCommande implements Initializable {
 		txtDate.setText(formatage.format(date)); // Permet d'afficher correctement la date sur l'application
 		cbxClient.getSelectionModel().select(c.getIdClient() - 1); // On doit enlever 1 sinon l'index n'est pas
 																	// equivalent a l'objet selectionné
+	}
+
+	// set l'id de la commande selectionnee dans la table
+	public int setSelectedId(int id) {
+		return this.id = id;
+	}
+
+	// retourne l'id de la commande selectionnee
+	public int getSelectedId() {
+		return setSelectedId(id);
 	}
 
 }

@@ -37,6 +37,8 @@ public class CtrlFicheModifierClient {
 	@FXML
 	private Label labelClient;
 
+	private int id;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -115,9 +117,12 @@ public class CtrlFicheModifierClient {
 			this.labelClient.setText(txtNomClient.getText().trim() + ", " + txtPrenom.getText().trim() + ", "
 					+ txtIdentifiant.getText().trim() + txtMdp.getText().trim());
 			this.labelClient.setTextFill(Color.BLACK);
-			Client client = new Client(nomClient, prenom, identifiant, mdp, numero, rue, codePostal, ville, pays);
+
+			Client client = new Client(getSelectedId(), nomClient, prenom, identifiant, mdp, numero, rue, codePostal,
+					ville, pays);
+
 			try {
-				daoLM.getClientDAO().create(client);
+				daoLM.getClientDAO().update(client);
 				// daoMySQL.getClientDAO().create(Client);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
@@ -152,6 +157,16 @@ public class CtrlFicheModifierClient {
 
 		txtVille.setText(c.getVille());
 		txtPays.setText(c.getPays());
+	}
+
+	// set l'id du client selectionne dans la table
+	public int setSelectedId(int id) {
+		return this.id = id;
+	}
+
+	// retourne l'id du client selectionnee
+	public int getSelectedId() {
+		return setSelectedId(id);
 	}
 
 }

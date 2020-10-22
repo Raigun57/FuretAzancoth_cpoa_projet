@@ -80,6 +80,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 			// Initialisation des composants avec les données de la ligne récupérer
 			controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem());
+			controleur.setSelectedId(getTabViewCommande().getSelectionModel().getSelectedItem().getIdCommande());
 
 			Stage stage = new Stage();
 

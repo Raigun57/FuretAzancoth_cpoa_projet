@@ -87,6 +87,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 
 			// Initialisation des composants avec les données de la ligne récupérer
 			controleur.initDonnees(tabViewProduit.getSelectionModel().getSelectedItem());
+			controleur.setSelectedId(getTabViewProduit().getSelectionModel().getSelectedItem().getId());
 
 			Stage stage = new Stage();
 

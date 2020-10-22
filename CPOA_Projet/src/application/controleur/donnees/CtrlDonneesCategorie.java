@@ -106,6 +106,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 
 			// Initialisation des composants avec les données de la ligne récupérer
 			controleur.initDonnees(tabViewCategorie.getSelectionModel().getSelectedItem());
+			controleur.setSelectedId(getTabViewCategorie().getSelectionModel().getSelectedItem().getId());
 
 			Stage stage = new Stage();
 

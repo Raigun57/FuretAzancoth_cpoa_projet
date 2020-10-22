@@ -35,6 +35,8 @@ public class CtrlFicheModifierProduit implements Initializable {
 	@FXML
 	private Button btnRetour;
 
+	private int id;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -75,10 +77,12 @@ public class CtrlFicheModifierProduit implements Initializable {
 		if (ok == true) {
 			this.labelProduit.setText(
 					txtNom.getText().trim() + " (" + cbxCategorie.getValue() + ")" + ", " + txtTarif.getText().trim());
-			Produit produit = new Produit(nom, description, tarif, "visuel", itemCategorie.getId());
 			this.labelProduit.setTextFill(Color.BLACK);
+
+			Produit produit = new Produit(getSelectedId(), nom, description, tarif, "visuel", itemCategorie.getId());
+
 			try {
-				daoLM.getProduitDAO().create(produit);
+				daoLM.getProduitDAO().update(produit);
 				// daoMySQL.getProduitDAO().create(produit);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
@@ -115,6 +119,16 @@ public class CtrlFicheModifierProduit implements Initializable {
 		txtTarif.setText(tarif.toString());
 		cbxCategorie.getSelectionModel().select(p.getIdCateg() - 1); // On doit enlever 1 sinon l'index n'est pas
 																		// equivalent a l'objet selectionné
+	}
+
+	// set l'id du produit selectionne dans la table
+	public int setSelectedId(int id) {
+		return this.id = id;
+	}
+
+	// retourne l'id du produit selectionne
+	public int getSelectedId() {
+		return setSelectedId(id);
 	}
 
 }

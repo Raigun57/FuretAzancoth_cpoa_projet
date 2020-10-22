@@ -23,6 +23,8 @@ public class CtrlFicheModifierCategorie {
 	@FXML
 	private Label labelCategorie;
 
+	private int id;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -47,7 +49,9 @@ public class CtrlFicheModifierCategorie {
 		if (ok == true) {
 			this.labelCategorie.setText(txtNomCateg.getText().trim() + ", " + txtVisuelCateg.getText().trim());
 			this.labelCategorie.setTextFill(Color.BLACK);
-			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
+
+			Categorie categ = new Categorie(getSelectedId(), nomCategorie, visuelCategorie);
+
 			try {
 				daoLM.getCategorieDAO().update(categ);
 				// daoMySQL.getProduitDAO().create(produit);
@@ -70,6 +74,16 @@ public class CtrlFicheModifierCategorie {
 	public void initDonnees(Categorie c) {
 		txtNomCateg.setText(c.getTitre());
 		txtVisuelCateg.setText(c.getVisuel());
+	}
+
+	// set l'id de la categorie selectionnee dans la table
+	public int setSelectedId(int id) {
+		return this.id = id;
+	}
+
+	// retourne l'id de la categorie selectionnee
+	public int getSelectedId() {
+		return setSelectedId(id);
 	}
 
 }

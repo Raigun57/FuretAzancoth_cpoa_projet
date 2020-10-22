@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.controleur.CtrlDetailAdresseClient;
 import application.controleur.modifier.CtrlFicheModifierClient;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
@@ -42,8 +43,6 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	@FXML
 	private TableColumn<Client, String> colMdp = new TableColumn<>("Mot de passe");
 	@FXML
-	private TableColumn<Client, String> colAdresse = new TableColumn<>("Adresse");
-	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
@@ -57,7 +56,6 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		colPrenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
 		colIdentifiant.setCellValueFactory(new PropertyValueFactory<Client, String>("identifiant"));
 		colMdp.setCellValueFactory(new PropertyValueFactory<Client, String>("mdp"));
-		// colAdresse.setCellValueFactory(new PropertyValueFactory<Client, Button>(""));
 		// Initialisation de la table categorie
 		tabViewClient.getColumns().setAll(colId, colNom, colPrenom, colIdentifiant, colMdp);
 
@@ -72,6 +70,32 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		btnModifier.setDisable(true);
 
 		this.tabViewClient.getSelectionModel().selectedItemProperty().addListener(this);
+
+		tabViewClient.setOnMouseClicked(event -> {
+			if (event.getClickCount() == 2) {
+
+				try {
+					URL fxmlURL = getClass().getResource("/fxml/DetailAdresseClient.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					Stage stage = new Stage();
+					String nomPrenom = tabViewClient.getSelectionModel().getSelectedItem().getNom()
+							.concat(" " + tabViewClient.getSelectionModel().getSelectedItem().getPrenom());
+
+					CtrlDetailAdresseClient controleur = fxmlLoader.getController();
+					controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());
+
+					stage.initModality(Modality.NONE);
+					stage.setTitle("Detail de l'adresse de " + nomPrenom);
+					stage.setScene(new Scene(root, 600, 400));
+					stage.show();
+				} catch (IOException e) {
+					e.getMessage();
+				}
+
+			}
+		});
 
 	}
 

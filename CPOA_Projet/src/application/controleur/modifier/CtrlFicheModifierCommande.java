@@ -1,15 +1,21 @@
 package application.controleur.modifier;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+import application.controleur.donnees.CtrlDonneesCommande;
 import dao.Persistance;
 import dao.factory.DAOFactory;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -68,6 +74,24 @@ public class CtrlFicheModifierCommande implements Initializable {
 			ok = false;
 		}
 
+		try {
+			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesCommande.fxml");
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+			Parent root = fxmlLoader.load();
+
+			CtrlDonneesCommande controleur = fxmlLoader.getController();
+
+			for (int i = 0; i < controleur.getTabViewCommande().getItems().size(); i++) {
+				if (date.equalsIgnoreCase(controleur.getDate().get(i))
+						&& itemClient.getId() == (controleur.getClient().get(i))) {
+					alerteDoublon();
+					ok = false;
+				}
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		if (ok == true) {
 			this.labelCommande.setText(txtDate.getText().trim() + ", " + cbxClient.getValue());
 			this.labelCommande.setTextFill(Color.BLACK);
@@ -120,6 +144,14 @@ public class CtrlFicheModifierCommande implements Initializable {
 	// retourne l'id de la commande selectionnee
 	public int getSelectedId() {
 		return setSelectedId(id);
+	}
+
+	public void alerteDoublon() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Doublon");
+		alert.setContentText(
+				"Vous avez rentré une date et un client qui existe deja. Cela signifie que la commande est deja existante.");
+		alert.show();
 	}
 
 }

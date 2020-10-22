@@ -66,6 +66,28 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 		this.tabViewCommande.getSelectionModel().selectedItemProperty().addListener(this);
 
+		tabViewCommande.setOnMouseClicked(event -> {
+			if (event.getClickCount() == 2) {
+
+				try {
+					URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesLigneCommande.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					Stage stage = new Stage();
+
+					stage.initModality(Modality.APPLICATION_MODAL);
+					stage.setTitle(
+							"Commande n°" + tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
+					stage.setScene(new Scene(root, 600, 400));
+					stage.show();
+				} catch (IOException e) {
+					e.getMessage();
+				}
+
+			}
+		});
+
 	}
 
 	@FXML

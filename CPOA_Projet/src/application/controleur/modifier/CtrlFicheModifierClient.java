@@ -129,7 +129,7 @@ public class CtrlFicheModifierClient {
 			CtrlDonneesClient controleur = fxmlLoader.getController();
 
 			for (int i = 0; i < controleur.getTabViewClient().getItems().size(); i++) {
-				if (nomClient.concat(" " + prenom).equalsIgnoreCase(controleur.getNomPrenom().get(i))) {
+				if (identifiant.equalsIgnoreCase(controleur.getIdentifiant().get(i))) {
 					alerteDoublon();
 					ok = false;
 				}

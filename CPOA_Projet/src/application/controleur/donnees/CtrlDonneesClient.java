@@ -138,7 +138,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			// Appelle du controleur de la fiche modifier
 			CtrlFicheModifierClient controleur = fxmlLoader.getController();
 
-			// Initialisation des composants avec les données de la ligne récupérer
+			// Initialisation des composants avec les donnï¿½es de la ligne rï¿½cupï¿½rer
 			controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewClient().getSelectionModel().getSelectedItem().getId());
 
@@ -195,14 +195,13 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		this.btnModifier.setDisable(newValue == null);
 	}
 
-	// Methode pour recuperer le nom et le prenom de tous les clients
-	public ArrayList<String> getNomPrenom() {
-		ArrayList<String> listeNomPrenom = new ArrayList<String>();
+	// Methode pour recuperer l'identifiant de tous les clients
+	public ArrayList<String> getIdentifiant() {
+		ArrayList<String> listeIdentifiant = new ArrayList<String>();
 		for (int i = 0; i < tabViewClient.getItems().size(); i++) {
-			listeNomPrenom.add( // On concate le nom et le prenom pour faire une methode au lieu de deux
-					tabViewClient.getItems().get(i).getNom().concat(" " + tabViewClient.getItems().get(i).getPrenom()));
+			listeIdentifiant.add(tabViewClient.getItems().get(i).getIdentifiant());
 		}
-		return listeNomPrenom;
+		return listeIdentifiant;
 	}
 
 	// Methode pour donner la table des categories a la fiche ajouter en laissant la

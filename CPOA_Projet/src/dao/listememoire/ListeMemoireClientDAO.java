@@ -26,7 +26,7 @@ public class ListeMemoireClientDAO implements ClientDAO {
 		this.donnees = new ArrayList<Client>();
 
 		this.donnees.add(new Client(1, "LAROCHE", "Pierre"));
-		this.donnees.add(new Client(2, "PASCAL", "Pedro", "64FTY678", "banana", 66, "rue de la paella", 12888, "Mexico",
+		this.donnees.add(new Client(2, "PASCAL", "Pedro", "pedro@gmail.com", "banana", 66, "rue de la paella", 12888, "Mexico",
 				"Mexique"));
 	}
 

@@ -36,12 +36,14 @@ public class ListeMemoireCommandeDAO implements CommandeDAO {
 		Produit prod = ListeMemoireProduitDAO.getInstance().getById(2);
 
 		HashMap<Produit, LigneCommande> listeLigneCommande1 = new HashMap<Produit, LigneCommande>();
+		HashMap<Produit, LigneCommande> listeLigneCommande2 = new HashMap<Produit, LigneCommande>();
+		
 		try {
 			listeLigneCommande1.put(prod, ListeMemoireLigneCommandeDAO.getInstance().getById(1, 2));
+			listeLigneCommande2.put(prod, ListeMemoireLigneCommandeDAO.getInstance().getById(2, 12));
 		} catch (SQLException e) {
 			e.getMessage();
 		}
-		HashMap<Produit, LigneCommande> listeLigneCommande2 = new HashMap<Produit, LigneCommande>();
 
 		this.donnees = new ArrayList<Commande>();
 

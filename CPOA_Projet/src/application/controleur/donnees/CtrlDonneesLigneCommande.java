@@ -2,15 +2,24 @@ package application.controleur.donnees;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import dao.factory.DAOFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import metier.Commande;
 import metier.LigneCommande;
+import metier.Produit;
 
 public class CtrlDonneesLigneCommande implements Initializable {
 
@@ -33,10 +42,22 @@ public class CtrlDonneesLigneCommande implements Initializable {
 		// Initialisation de la table categorie
 		tabViewLigneCommande.getColumns().setAll(colIdProduit, colQuantite, colTarif);
 
-		try {
-			tabViewLigneCommande.getItems()
-					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().findAll());
-		} catch (SQLException e) {
+	}
+	
+	public void initDonnees(int id) {
+		try {	
+			Commande commande = null;
+			
+			try {
+				commande = dao.factory.DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().getById(id);
+			} catch(Exception e) {
+				
+			}
+			HashMap<Produit, LigneCommande> map = dao.factory.DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().getById(id).getListeLigneCommande();
+			 for (Map.Entry mapentry : map.entrySet()) {
+				 tabViewLigneCommande.getItems().add((LigneCommande) mapentry.getValue());
+		        }
+		} catch (Exception e) {
 			e.getMessage();
 		}
 	}

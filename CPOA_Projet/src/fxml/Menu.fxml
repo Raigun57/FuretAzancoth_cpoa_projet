@@ -4,21 +4,20 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.CtrlMenu">
    <children>
       <TabPane fx:id="tabPaneMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab fx:id="tabClient" text="Client">
+         <tabs>
+            <Tab fx:id="tabClient" text="Client">
                <content>
                   <fx:include source="donnees/DonneesClient.fxml" />
                </content>
-          </Tab>
-          <Tab fx:id="tabCategorie" text="Categorie">
+            </Tab>
+            <Tab fx:id="tabCategorie" text="Categorie">
                <content>
                   <fx:include source="donnees/DonneesCategorie.fxml" />
                </content>
-          </Tab>
+            </Tab>
             <Tab fx:id="tabProduit" text="Produit">
                <content>
                   <fx:include source="donnees/DonneesProduit.fxml" />
@@ -29,7 +28,7 @@
                   <fx:include source="donnees/DonneesCommande.fxml" />
                </content>
             </Tab>
-        </tabs>
+         </tabs>
       </TabPane>
    </children>
 </AnchorPane>

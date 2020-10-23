@@ -6,6 +6,11 @@ public class LigneCommande {
 	private int quantite;
 	private double tarifUnitaire;
 	
+	public LigneCommande(int idCommande) {
+		super();
+		this.setIdCommande(idCommande);
+	}
+	
 	//Constructeur pour la methode delete de MySQLLigneCommandeDAO
 	public LigneCommande(int idCommande, int idProduit) {
 		super();

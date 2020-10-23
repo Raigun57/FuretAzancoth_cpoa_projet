@@ -33,14 +33,16 @@ public class ListeMemoireCommandeDAO implements CommandeDAO {
 		LocalDate date1 = LocalDate.parse("02/09/2020", formatage);
 		LocalDate date2 = LocalDate.parse("30/08/2020", formatage);
 
-		Produit prod = ListeMemoireProduitDAO.getInstance().getById(2);
+		Produit prod2 = ListeMemoireProduitDAO.getInstance().getById(2);
+		Produit prod6 = ListeMemoireProduitDAO.getInstance().getById(6);
 
 		HashMap<Produit, LigneCommande> listeLigneCommande1 = new HashMap<Produit, LigneCommande>();
 		HashMap<Produit, LigneCommande> listeLigneCommande2 = new HashMap<Produit, LigneCommande>();
 		
 		try {
-			listeLigneCommande1.put(prod, ListeMemoireLigneCommandeDAO.getInstance().getById(1, 2));
-			listeLigneCommande2.put(prod, ListeMemoireLigneCommandeDAO.getInstance().getById(2, 12));
+			listeLigneCommande1.put(prod2, ListeMemoireLigneCommandeDAO.getInstance().getById(1, 2));
+			listeLigneCommande1.put(prod6, ListeMemoireLigneCommandeDAO.getInstance().getById(1, 6));
+			listeLigneCommande2.put(prod2, ListeMemoireLigneCommandeDAO.getInstance().getById(2, 12));
 		} catch (SQLException e) {
 			e.getMessage();
 		}

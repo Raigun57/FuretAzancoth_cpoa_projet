@@ -26,9 +26,9 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO<LigneComma
 
 		this.donnees = new ArrayList<LigneCommande>();
 
-		this.donnees.add(new LigneCommande(1, 2, 2, 41.5));
-		this.donnees.add(new LigneCommande(1, 6, 1, 15));
-		this.donnees.add(new LigneCommande(2, 12, 4, 35));
+		this.donnees.add(new LigneCommande(1, 2, 2, 41.5));	// IdCommande = 1, Produit = Sonic te kiff
+		this.donnees.add(new LigneCommande(1, 6, 1, 15));	// IdCommande = 1, Produit = La chaleur des rennes
+		this.donnees.add(new LigneCommande(2, 12, 4, 35));	// IdCommande = 2, Produit = DALL
 	}
 
 
@@ -82,7 +82,7 @@ public class ListeMemoireLigneCommandeDAO implements LigneCommandeDAO<LigneComma
 	@Override
 	public LigneCommande getById(int id) {
 		// Ne fonctionne que si l'objet m�tier est bien fait...
-		int idx = this.donnees.indexOf(new LigneCommande(id, 5, 14, 50));
+		int idx = this.donnees.indexOf(new LigneCommande(id));
 		if (idx == -1) {
 			throw new IllegalArgumentException("Aucune ligne de commande ne poss�de cet identifiant");
 		} else {

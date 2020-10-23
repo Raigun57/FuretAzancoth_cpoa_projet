@@ -20,7 +20,7 @@ public class Commande {
 		super();
 		this.setDate(date);
 		this.setIdClient(idClient);
-		this.setListeCommande(listeLigneCommande);
+		this.setListeLigneCommande(listeLigneCommande);
 	}
 	
 	public Commande(int idCommande, LocalDate date, int idClient, HashMap<Produit, LigneCommande> listeLigneCommande) {
@@ -28,7 +28,7 @@ public class Commande {
 		this.setIdCommande(idCommande);
 		this.setDate(date);
 		this.setIdClient(idClient);
-		this.setListeCommande(listeLigneCommande);
+		this.setListeLigneCommande(listeLigneCommande);
 	}
 
 	public int getIdCommande() {
@@ -61,11 +61,11 @@ public class Commande {
 		this.date = date;
 	}
 
-	public HashMap<Produit, LigneCommande> getListeCommande() {
+	public HashMap<Produit, LigneCommande> getListeLigneCommande() {
 		return listeLigneCommande;
 	}
 
-	public void setListeCommande(HashMap<Produit, LigneCommande> listeCommande) {
+	public void setListeLigneCommande(HashMap<Produit, LigneCommande> listeCommande) {
 		this.listeLigneCommande = listeCommande;
 	}
 

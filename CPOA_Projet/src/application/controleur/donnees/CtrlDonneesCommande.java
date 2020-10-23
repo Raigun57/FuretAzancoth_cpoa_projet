@@ -75,10 +75,13 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 					Parent root = fxmlLoader.load();
 
 					Stage stage = new Stage();
+					
+					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
+					controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
 
 					stage.initModality(Modality.APPLICATION_MODAL);
 					stage.setTitle(
-							"Commande n°" + tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
+							"Commande n " + tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
 					stage.setScene(new Scene(root, 600, 400));
 					stage.show();
 				} catch (IOException e) {
@@ -100,7 +103,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			// Appelle du controleur de la fiche modifier
 			CtrlFicheModifierCommande controleur = fxmlLoader.getController();
 
-			// Initialisation des composants avec les données de la ligne récupérer
+			// Initialisation des composants avec les donnï¿½es de la ligne rï¿½cupï¿½rer
 			controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewCommande().getSelectionModel().getSelectedItem().getIdCommande());
 

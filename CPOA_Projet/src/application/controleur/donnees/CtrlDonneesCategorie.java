@@ -45,12 +45,10 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
-		// Initiliasiation des colonnes
+		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Categorie, Integer>("id"));
 		colNom.setCellValueFactory(new PropertyValueFactory<Categorie, String>("titre"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Categorie, String>("visuel"));
-		// Initialisation de la table categorie
-		tabViewCategorie.getColumns().setAll(colId, colNom, colVisuel);
 
 		try {
 			tabViewCategorie.getItems()
@@ -104,7 +102,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			// Appelle du controleur de la fiche modifier
 			CtrlFicheModifierCategorie controleur = fxmlLoader.getController();
 
-			// Initialisation des composants avec les données de la ligne récupérer
+			// Initialisation des composants avec les donnï¿½es de la ligne rï¿½cupï¿½rer
 			controleur.initDonnees(tabViewCategorie.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewCategorie().getSelectionModel().getSelectedItem().getId());
 

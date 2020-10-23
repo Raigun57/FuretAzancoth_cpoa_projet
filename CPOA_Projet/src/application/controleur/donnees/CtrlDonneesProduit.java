@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import application.controleur.modifier.CtrlFicheModifierProduit;
 import dao.factory.DAOFactory;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
@@ -25,6 +27,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import metier.Commande;
 import metier.Produit;
 
 public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit> {
@@ -42,7 +46,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	@FXML
 	private TableColumn<Produit, String> colVisuel = new TableColumn<>("Visuel");
 	@FXML
-	private TableColumn<Produit, Integer> colIdCateg = new TableColumn<>("ID Categorie");
+	private TableColumn<Produit, String> colIdCateg = new TableColumn<>("Categorie");
 	@FXML
 	private Button btnModifier;
 	@FXML
@@ -51,15 +55,23 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
-		// Initiliasiation des colonnes
+		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Produit, Integer>("id"));
 		colNom.setCellValueFactory(new PropertyValueFactory<Produit, String>("nom"));
 		colDescription.setCellValueFactory(new PropertyValueFactory<Produit, String>("description"));
 		colTarif.setCellValueFactory(new PropertyValueFactory<Produit, Double>("tarif"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Produit, String>("visuel"));
-		colIdCateg.setCellValueFactory(new PropertyValueFactory<Produit, Integer>("idCateg"));
-		// Initialisation de la table produit
-		tabViewProduit.getColumns().setAll(colId, colNom, colDescription, colTarif, colVisuel, colIdCateg);
+		colIdCateg.setCellValueFactory(new Callback<CellDataFeatures<Produit, String>, ObservableValue<String>> () {
+            public ObservableValue<String> call(CellDataFeatures<Produit, String> param) {
+                try {
+					return new ReadOnlyStringWrapper(
+							DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().getById(param.getValue().getIdCateg()).getTitre());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return null;
+            }            
+        });
 
 		try {
 			tabViewProduit.getItems()
@@ -85,7 +97,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			// Appelle du controleur de la fiche modifier
 			CtrlFicheModifierProduit controleur = fxmlLoader.getController();
 
-			// Initialisation des composants avec les données de la ligne récupérer
+			// Initialisation des composants avec les donnï¿½es de la ligne rï¿½cupï¿½rer
 			controleur.initDonnees(tabViewProduit.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewProduit().getSelectionModel().getSelectedItem().getId());
 

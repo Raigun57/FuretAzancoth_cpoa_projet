@@ -50,15 +50,13 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
-		// Initiliasiation des colonnes
+		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
 		colNom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
 		colPrenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
 		colIdentifiant.setCellValueFactory(new PropertyValueFactory<Client, String>("identifiant"));
 		colMdp.setCellValueFactory(new PropertyValueFactory<Client, String>("mdp"));
-		// Initialisation de la table categorie
-		tabViewClient.getColumns().setAll(colId, colNom, colPrenom, colIdentifiant, colMdp);
-
+		
 		try {
 			tabViewClient.getItems()
 					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());

@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 
 import application.controleur.modifier.CtrlFicheModifierCommande;
 import dao.factory.DAOFactory;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -23,10 +25,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import metier.Client;
 import metier.Commande;
 
 public class CtrlDonneesCommande implements Initializable, ChangeListener<Commande> {
@@ -38,21 +43,30 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	@FXML
 	private TableColumn<Commande, String> colDate = new TableColumn<>("Date");
 	@FXML
-	private TableColumn<Commande, Integer> colIdClient = new TableColumn<>("ID Client");
+	private TableColumn<Commande, String> colIdClient = new TableColumn<>("Client");
 	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
 		// Initiliasiation des colonnes
 		colIdCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("idCommande"));
 		colDate.setCellValueFactory(new PropertyValueFactory<Commande, String>("date"));
-		colIdClient.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("idClient"));
+		colIdClient.setCellValueFactory(new Callback<CellDataFeatures<Commande, String>, ObservableValue<String>> () {
+            public ObservableValue<String> call(CellDataFeatures<Commande, String> param) {
+                try {
+					return new ReadOnlyStringWrapper(
+							DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().getById(param.getValue().getIdClient()).getNom());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return null;
+            }            
+        });
 		// Initialisation de la table categorie
-		tabViewCommande.getColumns().setAll(colIdCommande, colDate, colIdClient);
+		//tabViewCommande.getColumns().setAll(colIdCommande, colDate, colIdClient);
 
 		try {
 			tabViewCommande.getItems()

@@ -4,45 +4,30 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.CtrlMenu">
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.CtrlMenu">
    <children>
-      <TabPane fx:id="tabPaneMenu" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPaneMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="tabClient" text="Client">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <fx:include source="donnees/DonneesClient.fxml" />
-                     </children>
-                  </AnchorPane>
-            </content>
+               <content>
+                  <fx:include source="donnees/DonneesClient.fxml" />
+               </content>
           </Tab>
           <Tab fx:id="tabCategorie" text="Categorie">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <fx:include source="donnees/DonneesCategorie.fxml" />
-                     </children>
-                  </AnchorPane>
-            </content>
+               <content>
+                  <fx:include source="donnees/DonneesCategorie.fxml" />
+               </content>
           </Tab>
             <Tab fx:id="tabProduit" text="Produit">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <fx:include source="donnees/DonneesProduit.fxml" />
-                     </children>
-                  </AnchorPane>
-              </content>
+               <content>
+                  <fx:include source="donnees/DonneesProduit.fxml" />
+               </content>
             </Tab>
             <Tab fx:id="tabCommande" text="Commande">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <fx:include source="donnees/DonneesCommande.fxml" />
-                     </children>
-                  </AnchorPane>
-              </content>
+               <content>
+                  <fx:include source="donnees/DonneesCommande.fxml" />
+               </content>
             </Tab>
         </tabs>
       </TabPane>

@@ -10,7 +10,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesCommande">
    <children>
-      <TableView fx:id="tabViewCommande" prefHeight="293.0" prefWidth="600.0">
+      <TableView fx:id="tabViewCommande" prefHeight="293.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columns>
             <TableColumn fx:id="colIdCommande" prefWidth="75.0" text="ID Commande" />
             <TableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
@@ -20,7 +20,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="btnAjouterCommande" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterCommande" text="Ajouter">
                <font>

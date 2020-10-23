@@ -19,16 +19,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import metier.Commande;
 import metier.Produit;
 
 public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit> {
@@ -48,12 +47,13 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	@FXML
 	private TableColumn<Produit, String> colIdCateg = new TableColumn<>("Categorie");
 	@FXML
+	private Button btnAjouterProduit;
+	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
 		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Produit, Integer>("id"));
@@ -61,17 +61,18 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		colDescription.setCellValueFactory(new PropertyValueFactory<Produit, String>("description"));
 		colTarif.setCellValueFactory(new PropertyValueFactory<Produit, Double>("tarif"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Produit, String>("visuel"));
-		colIdCateg.setCellValueFactory(new Callback<CellDataFeatures<Produit, String>, ObservableValue<String>> () {
-            public ObservableValue<String> call(CellDataFeatures<Produit, String> param) {
-                try {
-					return new ReadOnlyStringWrapper(
-							DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().getById(param.getValue().getIdCateg()).getTitre());
+		colIdCateg.setCellValueFactory(new Callback<CellDataFeatures<Produit, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<Produit, String> param) {
+				try {
+					return new ReadOnlyStringWrapper(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire)
+							.getCategorieDAO().getById(param.getValue().getIdCateg()).getTitre());
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				return null;
-            }            
-        });
+			}
+		});
 
 		try {
 			tabViewProduit.getItems()

@@ -7,6 +7,8 @@ import metier.Client;
 public class CtrlDetailAdresseClient {
 
 	@FXML
+	private Label labelIdentifiant;
+	@FXML
 	private Label labelNumero;
 	@FXML
 	private Label labelRue;
@@ -20,6 +22,7 @@ public class CtrlDetailAdresseClient {
 	// Methode qui place les donnees de l'adresse du client selectionne dans les
 	// labels
 	public void initDonnees(Client c) {
+		labelIdentifiant.setText(c.getIdentifiant());
 		int numero = c.getNumero();
 		labelNumero.setText(Integer.toString(numero));
 		labelRue.setText(c.getRue());

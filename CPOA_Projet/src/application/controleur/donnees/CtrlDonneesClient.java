@@ -39,24 +39,19 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	@FXML
 	private TableColumn<Client, String> colPrenom = new TableColumn<>("Prenom");
 	@FXML
-	private TableColumn<Client, String> colIdentifiant = new TableColumn<>("Identifiant");
-	@FXML
-	private TableColumn<Client, String> colMdp = new TableColumn<>("Mot de passe");
+	private Button btnAjouterClient;
 	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
 		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
 		colNom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
 		colPrenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
-		colIdentifiant.setCellValueFactory(new PropertyValueFactory<Client, String>("identifiant"));
-		colMdp.setCellValueFactory(new PropertyValueFactory<Client, String>("mdp"));
-		
+
 		try {
 			tabViewClient.getItems()
 					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());

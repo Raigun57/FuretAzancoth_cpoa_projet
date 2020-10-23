@@ -8,22 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesClient">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesClient">
    <children>
-      <TableView fx:id="tabViewClient" prefHeight="293.0" prefWidth="600.0">
+      <TableView fx:id="tabViewClient" prefHeight="293.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columns>
             <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="colNom" prefWidth="75.0" text="Nom" />
             <TableColumn fx:id="colPrenom" prefWidth="75.0" text="Prenom" />
-            <TableColumn fx:id="colIdentifiant" prefWidth="75.0" text="Identifiant" />
-            <TableColumn fx:id="colMdp" prefWidth="75.0" text="Mot de passe" />
-            <TableColumn fx:id="colAdresse" prefWidth="75.0" text="Adresse" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="btnAjouterClient" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterClient" text="Ajouter">
                <font>

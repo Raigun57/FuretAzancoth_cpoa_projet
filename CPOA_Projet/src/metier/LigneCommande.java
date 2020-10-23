@@ -5,17 +5,24 @@ public class LigneCommande {
 	private int idProduit;
 	private int quantite;
 	private double tarifUnitaire;
-	
+
 	public LigneCommande(int idCommande) {
 		super();
 		this.setIdCommande(idCommande);
 	}
-	
-	//Constructeur pour la methode delete de MySQLLigneCommandeDAO
+
+	// Constructeur pour la methode delete de MySQLLigneCommandeDAO
 	public LigneCommande(int idCommande, int idProduit) {
 		super();
 		this.setIdCommande(idCommande);
 		this.setIdProduit(idProduit);
+	}
+
+	public LigneCommande(int idProduit, int quantite, double tarifUnitaire) {
+		super();
+		this.setIdProduit(idProduit);
+		this.setQuantite(quantite);
+		this.setTarifUnitaire(tarifUnitaire);
 	}
 
 	public LigneCommande(int idCommande, int idProduit, int quantite, double tarifUnitaire) {
@@ -31,9 +38,9 @@ public class LigneCommande {
 	}
 
 	public void setIdCommande(int idCommande) {
-		if(idCommande <= 0)
+		if (idCommande <= 0)
 			throw new IllegalArgumentException("Id inferieur ou egal a 0 !");
-		else 
+		else
 			this.idCommande = idCommande;
 	}
 
@@ -42,20 +49,20 @@ public class LigneCommande {
 	}
 
 	public void setIdProduit(int idProduit) {
-		if(idProduit <= 0)
+		if (idProduit <= 0)
 			throw new IllegalArgumentException("Id inferieur ou egal a 0 !");
-		else 
+		else
 			this.idProduit = idProduit;
 	}
-	
+
 	public int getQuantite() {
 		return quantite;
 	}
 
 	public void setQuantite(int quantite) {
-		if(quantite <= 0)
+		if (quantite <= 0)
 			throw new IllegalArgumentException("Quantite negative ou nulle !");
-		else 
+		else
 			this.quantite = quantite;
 	}
 
@@ -64,9 +71,9 @@ public class LigneCommande {
 	}
 
 	public void setTarifUnitaire(double tarifUnitaire) {
-		if(tarifUnitaire < 0)
+		if (tarifUnitaire < 0)
 			throw new IllegalArgumentException("Tarif negatif !");
-		else 
+		else
 			this.tarifUnitaire = tarifUnitaire;
 	}
 
@@ -91,5 +98,5 @@ public class LigneCommande {
 			return false;
 		return true;
 	}
-	
+
 }

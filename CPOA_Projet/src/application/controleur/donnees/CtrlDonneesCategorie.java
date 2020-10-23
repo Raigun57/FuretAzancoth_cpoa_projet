@@ -38,12 +38,13 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	@FXML
 	private TableColumn<Categorie, String> colVisuel = new TableColumn<>("Visuel");
 	@FXML
+	private Button btnAjouterCategorie;
+	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(URL location, ResourceBundle resources) {
 		// Initialisation des colonnes
 		colId.setCellValueFactory(new PropertyValueFactory<Categorie, Integer>("id"));

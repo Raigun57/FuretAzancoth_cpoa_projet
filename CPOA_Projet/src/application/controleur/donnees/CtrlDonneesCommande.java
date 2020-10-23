@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 
 import application.controleur.modifier.CtrlFicheModifierCommande;
 import dao.factory.DAOFactory;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,7 +30,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import metier.Client;
 import metier.Commande;
 
 public class CtrlDonneesCommande implements Initializable, ChangeListener<Commande> {
@@ -45,6 +43,8 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	@FXML
 	private TableColumn<Commande, String> colIdClient = new TableColumn<>("Client");
 	@FXML
+	private Button btnAjouterCommande;
+	@FXML
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
@@ -54,19 +54,18 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		// Initiliasiation des colonnes
 		colIdCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("idCommande"));
 		colDate.setCellValueFactory(new PropertyValueFactory<Commande, String>("date"));
-		colIdClient.setCellValueFactory(new Callback<CellDataFeatures<Commande, String>, ObservableValue<String>> () {
-            public ObservableValue<String> call(CellDataFeatures<Commande, String> param) {
-                try {
-					return new ReadOnlyStringWrapper(
-							DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().getById(param.getValue().getIdClient()).getNom());
+		colIdClient.setCellValueFactory(new Callback<CellDataFeatures<Commande, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<Commande, String> param) {
+				try {
+					return new ReadOnlyStringWrapper(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire)
+							.getClientDAO().getById(param.getValue().getIdClient()).getNom());
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				return null;
-            }            
-        });
-		// Initialisation de la table categorie
-		//tabViewCommande.getColumns().setAll(colIdCommande, colDate, colIdClient);
+			}
+		});
 
 		try {
 			tabViewCommande.getItems()
@@ -89,7 +88,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 					Parent root = fxmlLoader.load();
 
 					Stage stage = new Stage();
-					
+
 					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
 					controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
 
@@ -124,7 +123,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			Stage stage = new Stage();
 
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setTitle("Modifier une categorie");
+			stage.setTitle("Modifier une commande");
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
@@ -178,7 +177,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	public void suppCommande() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Suppression d'une commande");
-		alert.setContentText("Voulez vous vraiment supprimer ce commande ?");
+		alert.setContentText("Voulez vous vraiment supprimer cette commande ?");
 		Optional<ButtonType> result = alert.showAndWait();
 
 		Commande categ = tabViewCommande.getSelectionModel().getSelectedItem();

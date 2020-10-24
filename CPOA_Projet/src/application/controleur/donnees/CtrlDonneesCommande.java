@@ -14,6 +14,10 @@ import dao.factory.DAOFactory;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -51,6 +56,10 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
+	@FXML
+	private TextField txtRechClientProd;
+
+	private final ObservableList<Commande> liste = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -117,6 +126,8 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 			}
 		});
+
+		// filtre();
 
 	}
 
@@ -241,6 +252,31 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	// table en privee
 	public TableView<Commande> getTabViewCommande() {
 		return tabViewCommande;
+	}
+
+	private void filtre() {
+		liste.addAll(tabViewCommande.getItems());
+		FilteredList<Commande> commandeFiltre = new FilteredList<Commande>(liste);
+
+		txtRechClientProd.textProperty().addListener((observable, oldValue, newValue) -> {
+			commandeFiltre.setPredicate(commande -> {
+				// Si le text field est vide, on montre toutes les commandes
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				String lowerCaseFilter = newValue.toLowerCase();
+
+				if (String.valueOf(commande.getIdClient()).indexOf(lowerCaseFilter) != -1)
+					return true;
+				else
+					return false;
+			});
+		});
+
+		SortedList<Commande> sortedData = new SortedList<>(commandeFiltre);
+		sortedData.comparatorProperty().bind(tabViewCommande.comparatorProperty());
+		tabViewCommande.setItems(sortedData);
 	}
 
 }

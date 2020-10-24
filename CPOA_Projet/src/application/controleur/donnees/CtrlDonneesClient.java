@@ -12,6 +12,10 @@ import application.controleur.modifier.CtrlFicheModifierClient;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +29,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -47,6 +52,11 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
+
+	@FXML
+	private TextField txtRechNomPrenom;
+
+	private final ObservableList<Client> liste = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -103,6 +113,8 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 
 			}
 		});
+
+		// filtre();
 
 	}
 
@@ -216,6 +228,33 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	// table en privee
 	public TableView<Client> getTabViewClient() {
 		return tabViewClient;
+	}
+
+	private void filtre() {
+		liste.addAll(tabViewClient.getItems());
+		FilteredList<Client> clientFiltre = new FilteredList<Client>(liste);
+
+		txtRechNomPrenom.textProperty().addListener((observable, oldValue, newValue) -> {
+			clientFiltre.setPredicate(client -> {
+				// Si le text field est vide, on montre tous les clients
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				String lowerCaseFilter = newValue.toLowerCase();
+
+				if (client.getNom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true;
+				} else if (client.getPrenom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true;
+				} else
+					return false;
+			});
+		});
+
+		SortedList<Client> sortedData = new SortedList<>(clientFiltre);
+		sortedData.comparatorProperty().bind(tabViewClient.comparatorProperty());
+		tabViewClient.setItems(sortedData);
 	}
 
 }

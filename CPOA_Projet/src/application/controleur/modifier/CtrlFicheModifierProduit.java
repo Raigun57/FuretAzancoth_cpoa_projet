@@ -1,19 +1,13 @@
 package application.controleur.modifier;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.controleur.donnees.CtrlDonneesProduit;
 import dao.Persistance;
 import dao.factory.DAOFactory;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -80,25 +74,6 @@ public class CtrlFicheModifierProduit implements Initializable {
 			ok = false;
 		}
 
-		try {
-			URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesProduit.fxml");
-			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
-			Parent root = fxmlLoader.load();
-
-			CtrlDonneesProduit controleur = fxmlLoader.getController();
-
-			for (int i = 0; i < controleur.getTabViewProduit().getItems().size(); i++) {
-				if (nom.equalsIgnoreCase(controleur.getNom().get(i))
-						&& itemCategorie.getId() == controleur.getIdCateg().get(i)) {
-					alerteDoublon();
-					ok = false;
-				}
-			}
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
 		if (ok == true) {
 			this.labelProduit.setText(
 					txtNom.getText().trim() + " (" + cbxCategorie.getValue() + ")" + ", " + txtTarif.getText().trim());
@@ -154,13 +129,6 @@ public class CtrlFicheModifierProduit implements Initializable {
 	// retourne l'id du produit selectionne
 	public int getSelectedId() {
 		return setSelectedId(id);
-	}
-
-	public void alerteDoublon() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Doublon");
-		alert.setContentText("Ce nom de produit existe deja pour cette categorie. Changez le nom ou la categorie");
-		alert.show();
 	}
 
 }

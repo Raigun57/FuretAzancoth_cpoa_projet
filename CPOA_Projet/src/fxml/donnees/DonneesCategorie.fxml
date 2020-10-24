@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesCategorie">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.donnees.CtrlDonneesCategorie">
    <children>
-      <TableView fx:id="tabViewCategorie" prefHeight="293.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+      <TableView fx:id="tabViewCategorie" prefHeight="385.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columns>
             <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="colNom" prefWidth="75.0" text="Nom" />
@@ -32,7 +32,7 @@
             </Button>
             <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifCategorie" text="Modifier">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Button>
             <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#suppCategorie" text="Supprimer">
@@ -40,7 +40,7 @@
                   <Insets left="30.0" />
                </FlowPane.margin>
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Button>
          </children>

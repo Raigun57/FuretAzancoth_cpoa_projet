@@ -12,6 +12,10 @@ import dao.factory.DAOFactory;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -55,6 +60,10 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
+	@FXML
+	private TextField txtRechNom;
+
+	private final ObservableList<Produit> liste = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -94,11 +103,13 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			while (source != null && !(source instanceof TableRow)) {
 				source = source.getParent();
 			}
-			// Si le selection est null (ligne vide) alors on nettoie la selection
+			// Si la selection est nulle (ligne vide) alors on nettoie la selection
 			if (source == null || (source instanceof TableRow && ((TableRow<?>) source).isEmpty())) {
 				tabViewProduit.getSelectionModel().clearSelection();
 			}
 		});
+
+		// filtre();
 
 	}
 
@@ -220,6 +231,33 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	// table en privee
 	public TableView<Produit> getTabViewProduit() {
 		return tabViewProduit;
+	}
+
+	private void filtre() {
+		liste.addAll(tabViewProduit.getItems());
+		FilteredList<Produit> produitFiltre = new FilteredList<Produit>(liste);
+
+		txtRechNom.textProperty().addListener((observable, oldValue, newValue) -> {
+			produitFiltre.setPredicate(produit -> {
+				// Si le text field est vide, on montre tous les produits
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				String lowerCaseFilter = newValue.toLowerCase();
+
+				if (produit.getNom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true;
+				} else if (String.valueOf(produit.getTarif()).indexOf(lowerCaseFilter) != -1)
+					return true;
+				else
+					return false;
+			});
+		});
+
+		SortedList<Produit> sortedData = new SortedList<>(produitFiltre);
+		sortedData.comparatorProperty().bind(tabViewProduit.comparatorProperty());
+		tabViewProduit.setItems(sortedData);
 	}
 
 }

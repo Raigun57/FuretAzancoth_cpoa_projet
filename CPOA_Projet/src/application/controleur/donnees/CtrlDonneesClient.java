@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,8 +23,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import metier.Client;
@@ -63,6 +66,17 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		btnModifier.setDisable(true);
 
 		this.tabViewClient.getSelectionModel().selectedItemProperty().addListener(this);
+		this.tabViewClient.addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+			Node source = evt.getPickResult().getIntersectedNode();
+
+			while (source != null && !(source instanceof TableRow)) {
+				source = source.getParent();
+			}
+			// Si le selection est null (ligne vide) alors on nettoie la selection
+			if (source == null || (source instanceof TableRow && ((TableRow<?>) source).isEmpty())) {
+				tabViewClient.getSelectionModel().clearSelection();
+			}
+		});
 
 		tabViewClient.setOnMouseClicked(event -> {
 			if (event.getClickCount() == 2) {
@@ -184,6 +198,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 
 	@Override
 	public void changed(ObservableValue<? extends Client> observable, Client oldValue, Client newValue) {
+		this.btnAjouterClient.setDisable(newValue != null);
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
 	}

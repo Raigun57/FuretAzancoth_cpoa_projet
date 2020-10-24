@@ -22,7 +22,7 @@
       </TableView>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button fx:id="btnAjouter" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterLigneCommande" text="Ajouter">
+            <Button fx:id="btnAjouterLigneCommande" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterLigneCommande" text="Ajouter">
                <font>
                   <Font size="14.0" />
                </font>

@@ -17,6 +17,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,8 +26,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -44,7 +47,8 @@ public class CtrlDonneesLigneCommande implements Initializable, ChangeListener<L
 	private TableColumn<LigneCommande, Integer> colQuantite = new TableColumn<>("Quantite");
 	@FXML
 	private TableColumn<LigneCommande, Double> colTarif = new TableColumn<>("Tarif");
-
+	@FXML
+	private Button btnAjouterLigneCommande;
 	@FXML
 	private Button btnModifier;
 	@FXML
@@ -75,9 +79,8 @@ public class CtrlDonneesLigneCommande implements Initializable, ChangeListener<L
 				// Vide la table de donnees
 				tabViewLigneCommande.getItems().clear();
 				// Rerempli la table de donnees
-				tabViewLigneCommande.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().findAll());
-			} catch (SQLException e) {
+				tabViewLigneCommande.getItems().addAll();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -108,7 +111,7 @@ public class CtrlDonneesLigneCommande implements Initializable, ChangeListener<L
 				// Rerempli la table de donnees
 				tabViewLigneCommande.getItems()
 						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().findAll());
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.getMessage();
 			}
 		} catch (IOException e) {
@@ -129,22 +132,14 @@ public class CtrlDonneesLigneCommande implements Initializable, ChangeListener<L
 			try {
 				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().delete(lc);
 				// Vide la table de donnees
-				tabViewLigneCommande.getItems().clear();
+				// tabViewLigneCommande.getItems().clear();
 				// Rerempli la table de donnees
-				tabViewLigneCommande.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().findAll());
-			} catch (SQLException e) {
+				// tabViewLigneCommande.getItems().addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getLigneCommandeDAO().findAll());
+			} catch (Exception e) {
 				e.getMessage();
 			}
 		} else
 			tabViewLigneCommande.getSelectionModel().clearSelection();
-	}
-
-	@Override
-	public void changed(ObservableValue<? extends LigneCommande> observable, LigneCommande oldValue,
-			LigneCommande newValue) {
-		this.btnSupprimer.setDisable(newValue == null);
-		this.btnModifier.setDisable(newValue == null);
 	}
 
 	@Override
@@ -163,8 +158,33 @@ public class CtrlDonneesLigneCommande implements Initializable, ChangeListener<L
 						return null;
 					}
 				});
+
 		colQuantite.setCellValueFactory(new PropertyValueFactory<LigneCommande, Integer>("quantite"));
 		colTarif.setCellValueFactory(new PropertyValueFactory<LigneCommande, Double>("tarifUnitaire"));
+
+		btnSupprimer.setDisable(true);
+		btnModifier.setDisable(true);
+
+		this.tabViewLigneCommande.getSelectionModel().selectedItemProperty().addListener(this);
+		this.tabViewLigneCommande.addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+			Node source = evt.getPickResult().getIntersectedNode();
+
+			while (source != null && !(source instanceof TableRow)) {
+				source = source.getParent();
+			}
+			// Si le selection est null (ligne vide) alors on nettoie la selection
+			if (source == null || (source instanceof TableRow && ((TableRow<?>) source).isEmpty())) {
+				tabViewLigneCommande.getSelectionModel().clearSelection();
+			}
+		});
+	}
+
+	@Override
+	public void changed(ObservableValue<? extends LigneCommande> observable, LigneCommande oldValue,
+			LigneCommande newValue) {
+		this.btnAjouterLigneCommande.setDisable(newValue != null);
+		this.btnSupprimer.setDisable(newValue == null);
+		this.btnModifier.setDisable(newValue == null);
 	}
 
 	@SuppressWarnings({ "unused", "rawtypes" })

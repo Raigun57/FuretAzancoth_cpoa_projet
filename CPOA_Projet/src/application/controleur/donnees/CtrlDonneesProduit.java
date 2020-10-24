@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.controleur.CtrlDetailProduit;
 import application.controleur.modifier.CtrlFicheModifierProduit;
 import dao.factory.DAOFactory;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -109,6 +110,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			}
 		});
 
+		detail();
 		// filtre();
 
 	}
@@ -231,6 +233,33 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	// table en privee
 	public TableView<Produit> getTabViewProduit() {
 		return tabViewProduit;
+	}
+
+	private void detail() {
+		tabViewProduit.setOnMouseClicked(event -> {
+			if (tabViewProduit.getSelectionModel().getSelectedItem() != null && event.getClickCount() == 2) {
+
+				try {
+					URL fxmlURL = getClass().getResource("/fxml/DetailProduit.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					Stage stage = new Stage();
+					String nom = tabViewProduit.getSelectionModel().getSelectedItem().getNom();
+
+					CtrlDetailProduit controleur = fxmlLoader.getController();
+					controleur.initDonnees(tabViewProduit.getSelectionModel().getSelectedItem());
+
+					stage.initModality(Modality.NONE);
+					stage.setTitle("Detail du produit " + nom);
+					stage.setScene(new Scene(root, 600, 400));
+					stage.show();
+				} catch (IOException e) {
+					e.getMessage();
+				}
+
+			}
+		});
 	}
 
 	private void filtre() {

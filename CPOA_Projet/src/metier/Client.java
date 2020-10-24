@@ -89,6 +89,16 @@ public class Client {
 		return prenom;
 	}
 
+	// Pour la recherche de client par nom prenom
+	public String getNomPrenom() {
+		return nom + " " + prenom;
+	}
+
+	// Pour la recherche de client par prenom nom
+	public String getPrenomNom() {
+		return prenom + " " + nom;
+	}
+
 	public void setPrenom(String prenom) {
 		if (prenom == null || prenom.trim().length() == 0) {
 			throw new IllegalArgumentException("Prenom du client vide !");

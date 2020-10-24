@@ -102,31 +102,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			}
 		});
 
-		tabViewCommande.setOnMouseClicked(event -> {
-			if (event.getClickCount() == 2) {
-
-				try {
-					URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesLigneCommande.fxml");
-					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
-					Parent root = fxmlLoader.load();
-
-					Stage stage = new Stage();
-
-					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
-					controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
-
-					stage.initModality(Modality.APPLICATION_MODAL);
-					stage.setTitle(
-							"Commande n " + tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
-					stage.setScene(new Scene(root, 600, 400));
-					stage.show();
-				} catch (IOException e) {
-					e.getMessage();
-				}
-
-			}
-		});
-
+		detail();
 		// filtre();
 
 	}
@@ -252,6 +228,33 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 	// table en privee
 	public TableView<Commande> getTabViewCommande() {
 		return tabViewCommande;
+	}
+
+	private void detail() {
+		tabViewCommande.setOnMouseClicked(event -> {
+			if (tabViewCommande.getSelectionModel().getSelectedItem() != null && event.getClickCount() == 2) {
+
+				try {
+					URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesLigneCommande.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					Stage stage = new Stage();
+
+					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
+					controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
+
+					stage.initModality(Modality.APPLICATION_MODAL);
+					stage.setTitle(
+							"Commande n " + tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
+					stage.setScene(new Scene(root, 600, 400));
+					stage.show();
+				} catch (IOException e) {
+					e.getMessage();
+				}
+
+			}
+		});
 	}
 
 	private void filtre() {

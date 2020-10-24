@@ -52,7 +52,6 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
-
 	@FXML
 	private TextField txtRechNomPrenom;
 
@@ -88,33 +87,8 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			}
 		});
 
-		tabViewClient.setOnMouseClicked(event -> {
-			if (event.getClickCount() == 2) {
-
-				try {
-					URL fxmlURL = getClass().getResource("/fxml/DetailAdresseClient.fxml");
-					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
-					Parent root = fxmlLoader.load();
-
-					Stage stage = new Stage();
-					String nomPrenom = tabViewClient.getSelectionModel().getSelectedItem().getNom()
-							.concat(" " + tabViewClient.getSelectionModel().getSelectedItem().getPrenom());
-
-					CtrlDetailAdresseClient controleur = fxmlLoader.getController();
-					controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());
-
-					stage.initModality(Modality.NONE);
-					stage.setTitle("Detail de l'adresse de " + nomPrenom);
-					stage.setScene(new Scene(root, 600, 400));
-					stage.show();
-				} catch (IOException e) {
-					e.getMessage();
-				}
-
-			}
-		});
-
-		// filtre();
+		detail();
+		filtre();
 
 	}
 
@@ -132,17 +106,8 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewClient.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewClient.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());
-			} catch (SQLException e) {
-				e.getMessage();
-			}
+			refresh();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -168,18 +133,8 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewClient.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewClient.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			refresh();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -196,11 +151,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		if (result.get() == ButtonType.OK) {
 			try {
 				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().delete(client);
-				// Vide la table de donnees
-				tabViewClient.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewClient.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());
+				refresh();
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -213,6 +164,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		this.btnAjouterClient.setDisable(newValue != null);
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
+		filtre();
 	}
 
 	// Methode pour recuperer l'identifiant de tous les clients
@@ -228,6 +180,34 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	// table en privee
 	public TableView<Client> getTabViewClient() {
 		return tabViewClient;
+	}
+
+	private void detail() {
+		tabViewClient.setOnMouseClicked(event -> {
+			if (tabViewClient.getSelectionModel().getSelectedItem() != null && event.getClickCount() == 2) {
+
+				try {
+					URL fxmlURL = getClass().getResource("/fxml/DetailAdresseClient.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					Stage stage = new Stage();
+					String nomPrenom = tabViewClient.getSelectionModel().getSelectedItem().getNom()
+							.concat(" " + tabViewClient.getSelectionModel().getSelectedItem().getPrenom());
+
+					CtrlDetailAdresseClient controleur = fxmlLoader.getController();
+					controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());
+
+					stage.initModality(Modality.NONE);
+					stage.setTitle("Detail de l'adresse de " + nomPrenom);
+					stage.setScene(new Scene(root, 600, 400));
+					stage.show();
+				} catch (IOException e) {
+					e.getMessage();
+				}
+
+			}
+		});
 	}
 
 	private void filtre() {
@@ -247,6 +227,10 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 					return true;
 				} else if (client.getPrenom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
 					return true;
+				} else if (client.getNomPrenom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true;
+				} else if (client.getPrenomNom().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true;
 				} else
 					return false;
 			});
@@ -255,6 +239,19 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		SortedList<Client> sortedData = new SortedList<>(clientFiltre);
 		sortedData.comparatorProperty().bind(tabViewClient.comparatorProperty());
 		tabViewClient.setItems(sortedData);
+	}
+
+	private void refresh() {
+		FilteredList<Client> clientFiltre = null;
+		try {
+			clientFiltre = new FilteredList<Client>(FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
+					.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		SortedList<Client> sortedData = new SortedList<>(clientFiltre);
+		tabViewClient.setItems(sortedData);
+		tabViewClient.refresh();
 	}
 
 }

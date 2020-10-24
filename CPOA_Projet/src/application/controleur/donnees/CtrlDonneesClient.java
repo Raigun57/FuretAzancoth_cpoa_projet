@@ -164,7 +164,6 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		this.btnAjouterClient.setDisable(newValue != null);
 		this.btnSupprimer.setDisable(newValue == null);
 		this.btnModifier.setDisable(newValue == null);
-		filtre();
 	}
 
 	// Methode pour recuperer l'identifiant de tous les clients
@@ -192,8 +191,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 					Parent root = fxmlLoader.load();
 
 					Stage stage = new Stage();
-					String nomPrenom = tabViewClient.getSelectionModel().getSelectedItem().getNom()
-							.concat(" " + tabViewClient.getSelectionModel().getSelectedItem().getPrenom());
+					String nomPrenom = tabViewClient.getSelectionModel().getSelectedItem().getPrenomNom();
 
 					CtrlDetailAdresseClient controleur = fxmlLoader.getController();
 					controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());

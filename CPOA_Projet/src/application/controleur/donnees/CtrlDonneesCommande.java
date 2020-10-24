@@ -103,7 +103,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		});
 
 		detail();
-		// filtre();
+		filtre();
 
 	}
 
@@ -128,16 +128,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewCommande.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCommande.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll());
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			refresh();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,15 +150,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewCommande.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCommande.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll());
-			} catch (SQLException e) {
-				e.getMessage();
-			}
+			refresh();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,11 +168,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		if (result.get() == ButtonType.OK) {
 			try {
 				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().delete(categ);
-				// Vide la table de donnees
-				tabViewCommande.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCommande.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll());
+				refresh();
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -280,6 +259,20 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 		SortedList<Commande> sortedData = new SortedList<>(commandeFiltre);
 		sortedData.comparatorProperty().bind(tabViewCommande.comparatorProperty());
 		tabViewCommande.setItems(sortedData);
+	}
+
+	private void refresh() {
+		FilteredList<Commande> commandeFiltre = null;
+		try {
+			commandeFiltre = new FilteredList<Commande>(
+					FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
+							.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().findAll()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		SortedList<Commande> sortedData = new SortedList<>(commandeFiltre);
+		tabViewCommande.setItems(sortedData);
+		tabViewCommande.refresh();
 	}
 
 }

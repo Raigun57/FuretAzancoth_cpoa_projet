@@ -111,7 +111,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		});
 
 		detail();
-		// filtre();
+		filtre();
 
 	}
 
@@ -136,16 +136,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewProduit.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewProduit.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll());
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			refresh();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,15 +157,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			stage.setScene(new Scene(root, 600, 400));
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
-			try {
-				// Vide la table de donnees
-				tabViewProduit.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewProduit.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll());
-			} catch (SQLException e) {
-				e.getMessage();
-			}
+			refresh();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,11 +175,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		if (result.get() == ButtonType.OK) {
 			try {
 				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().delete(produit);
-				// Vide la table de donnees
-				tabViewProduit.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewProduit.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll());
+				refresh();
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -287,6 +266,20 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		SortedList<Produit> sortedData = new SortedList<>(produitFiltre);
 		sortedData.comparatorProperty().bind(tabViewProduit.comparatorProperty());
 		tabViewProduit.setItems(sortedData);
+	}
+
+	private void refresh() {
+		FilteredList<Produit> produitFiltre = null;
+		try {
+			produitFiltre = new FilteredList<Produit>(
+					FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
+							.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		SortedList<Produit> sortedData = new SortedList<>(produitFiltre);
+		tabViewProduit.setItems(sortedData);
+		tabViewProduit.refresh();
 	}
 
 }

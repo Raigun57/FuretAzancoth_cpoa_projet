@@ -93,7 +93,8 @@ public class MySQLClientDAO implements ClientDAO {
 		ResultSet res = requete.executeQuery();
 
 		if (res.next()) {
-			client = new Client(res.getInt(1), res.getString(2), res.getString(3));
+			client = new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+					res.getInt(6), res.getString(7), res.getInt(8), res.getString(9), res.getString(10));
 		}
 		return client;
 	}
@@ -107,7 +108,9 @@ public class MySQLClientDAO implements ClientDAO {
 		ResultSet res = requete.executeQuery();
 
 		while (res.next()) {
-			listeClient.add(new Client(res.getInt(1), res.getString(2), res.getString(3)));
+			listeClient.add(
+					new Client(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+							res.getInt(6), res.getString(7), res.getInt(8), res.getString(9), res.getString(10)));
 		}
 		return listeClient;
 	}

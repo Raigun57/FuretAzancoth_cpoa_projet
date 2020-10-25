@@ -275,12 +275,11 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		FilteredList<Client> clientFiltre = null;
 		try {
 			if (getCbxPersistanceIndex() == 0)
-				clientFiltre = new FilteredList<Client>(FXCollections.observableArrayList(
-						dao.factory.MySQLDAOFactory.getDAOFactory(dao.Persistance.MYSQL).getClientDAO().findAll()));
+				clientFiltre = new FilteredList<Client>(FXCollections
+						.observableArrayList(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getClientDAO().findAll()));
 			else if (getCbxPersistanceIndex() == 1)
-				clientFiltre = new FilteredList<Client>(
-						FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
-								.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll()));
+				clientFiltre = new FilteredList<Client>(FXCollections.observableArrayList(
+						DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll()));
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -272,6 +272,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	}
 
 	private void filtre() {
+
 		liste.addAll(tabViewProduit.getItems());
 		FilteredList<Produit> produitFiltre = new FilteredList<Produit>(liste);
 
@@ -303,11 +304,10 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		try {
 			if (getCbxPersistanceIndex() == 0)
 				produitFiltre = new FilteredList<Produit>(FXCollections.observableArrayList(
-						dao.factory.MySQLDAOFactory.getDAOFactory(dao.Persistance.MYSQL).getProduitDAO().findAll()));
+						DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getProduitDAO().findAll()));
 			else if (getCbxPersistanceIndex() == 1)
-				produitFiltre = new FilteredList<Produit>(
-						FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
-								.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll()));
+				produitFiltre = new FilteredList<Produit>(FXCollections.observableArrayList(
+						DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

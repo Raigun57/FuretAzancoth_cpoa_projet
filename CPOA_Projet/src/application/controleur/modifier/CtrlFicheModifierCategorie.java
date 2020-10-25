@@ -53,11 +53,10 @@ public class CtrlFicheModifierCategorie {
 			Categorie categ = new Categorie(getSelectedId(), nomCategorie, visuelCategorie);
 
 			try {
-				if (i == 1) {
-					daoLM.getCategorieDAO().update(categ);
-				} else if (i == 0) {
+				if (i == 0)
 					daoMySQL.getCategorieDAO().update(categ);
-				}
+				else if (i == 1)
+					daoLM.getCategorieDAO().update(categ);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {

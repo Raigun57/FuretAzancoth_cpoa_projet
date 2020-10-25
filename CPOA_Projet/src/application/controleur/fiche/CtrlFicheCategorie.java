@@ -77,11 +77,11 @@ public class CtrlFicheCategorie {
 			this.labelCategorie.setTextFill(Color.BLACK);
 			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
 			try {
-				if (i == 1) {
-					daoLM.getCategorieDAO().create(categ);
-				} else if (i == 0) {
+				if (i == 0)
 					daoMySQL.getCategorieDAO().create(categ);
-				}
+				else if (i == 1)
+					daoLM.getCategorieDAO().create(categ);
+
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {

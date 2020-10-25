@@ -37,7 +37,7 @@ public class CtrlFicheModifierClient {
 	@FXML
 	private Label labelClient;
 
-	private int id;
+	private int id, i;
 
 	@FXML
 	public void valider() {
@@ -83,6 +83,7 @@ public class CtrlFicheModifierClient {
 			numero = Integer.parseInt(txtNumero.getText().trim());
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelClient.setText("Le numero n'est pas numerique ou le numero est vide");
+			this.labelClient.setText(e.getMessage());
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
@@ -97,6 +98,7 @@ public class CtrlFicheModifierClient {
 			codePostal = Integer.parseInt(txtCodePostal.getText().trim());
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelClient.setText("Le code postal n'est pas numerique ou le code postal est vide");
+			this.labelClient.setText(e.getMessage());
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
@@ -114,16 +116,14 @@ public class CtrlFicheModifierClient {
 		}
 
 		if (ok == true) {
-			this.labelClient.setText(txtNomClient.getText().trim() + ", " + txtPrenom.getText().trim() + ", "
-					+ txtIdentifiant.getText().trim() + txtMdp.getText().trim());
-			this.labelClient.setTextFill(Color.BLACK);
-
 			Client client = new Client(getSelectedId(), nomClient, prenom, identifiant, mdp, numero, rue, codePostal,
 					ville, pays);
 
 			try {
-				daoLM.getClientDAO().update(client);
-				// daoMySQL.getClientDAO().create(Client);
+				if (i == 0)
+					daoMySQL.getClientDAO().update(client);
+				else if (i == 1)
+					daoLM.getClientDAO().update(client);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -167,6 +167,11 @@ public class CtrlFicheModifierClient {
 	// retourne l'id du client selectionnee
 	public int getSelectedId() {
 		return setSelectedId(id);
+	}
+
+	// Permet de set le bon index de la choice box de persistance
+	public void setIndexPersistance(int i) {
+		this.i = i;
 	}
 
 }

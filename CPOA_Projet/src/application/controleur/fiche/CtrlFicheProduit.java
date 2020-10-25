@@ -41,6 +41,8 @@ public class CtrlFicheProduit implements Initializable {
 	@FXML
 	private Button btnRetour;
 
+	private int i;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -98,13 +100,12 @@ public class CtrlFicheProduit implements Initializable {
 		}
 
 		if (ok == true) {
-			this.labelProduit.setText(
-					txtNom.getText().trim() + " (" + cbxCategorie.getValue() + ")" + ", " + txtTarif.getText().trim());
 			Produit produit = new Produit(nom, description, tarif, "visuel", itemCategorie.getId());
-			this.labelProduit.setTextFill(Color.BLACK);
 			try {
-				daoLM.getProduitDAO().create(produit);
-				// daoMySQL.getProduitDAO().create(produit);
+				if (i == 0)
+					daoMySQL.getProduitDAO().create(produit);
+				else if (i == 1)
+					daoLM.getProduitDAO().create(produit);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -123,9 +124,14 @@ public class CtrlFicheProduit implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		DAOFactory dao = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoSQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
+
 		try {
-			this.cbxCategorie.setItems(FXCollections.observableArrayList(dao.getCategorieDAO().findAll()));
+			if (i == 0)
+				cbxCategorie.setItems(FXCollections.observableArrayList(daoLM.getCategorieDAO().findAll()));
+			else if (i == 1)
+				cbxCategorie.setItems(FXCollections.observableArrayList(daoSQL.getCategorieDAO().findAll()));
 		} catch (Exception e) {
 			System.out.println("Probleme avec la ChoiceBox");
 			e.printStackTrace();
@@ -137,6 +143,11 @@ public class CtrlFicheProduit implements Initializable {
 		alert.setTitle("Doublon");
 		alert.setContentText("Ce nom de produit existe deja pour cette categorie. Changez le nom ou la categorie");
 		alert.show();
+	}
+
+	// Permet de set le bon index de la choice box de persistance
+	public void setIndexPersistance(int i) {
+		this.i = i;
 	}
 
 }

@@ -62,6 +62,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		colNom.setCellValueFactory(new PropertyValueFactory<Categorie, String>("titre"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Categorie, String>("visuel"));
 
+		// Persistance
 		try {
 			cbxPersistance.setItems(persistance);
 		} catch (Exception e) {
@@ -72,12 +73,13 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		cbxPersistance.getSelectionModel().selectFirst();
 
 		try {
-			if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
-				tabViewCategorie.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
-			else
+			if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
 				tabViewCategorie.getItems()
 						.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+			else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+				tabViewCategorie.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+
 		} catch (SQLException e) {
 			e.getMessage();
 		}
@@ -253,7 +255,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		return tabViewCategorie;
 	}
 
-	public int getCbxPersistanceIndex() {
+	private int getCbxPersistanceIndex() {
 		return cbxPersistance.getSelectionModel().getSelectedIndex();
 	}
 

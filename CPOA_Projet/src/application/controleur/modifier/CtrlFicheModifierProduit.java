@@ -35,7 +35,7 @@ public class CtrlFicheModifierProduit implements Initializable {
 	@FXML
 	private Button btnRetour;
 
-	private int id;
+	private int id, i;
 
 	@FXML
 	public void valider() {
@@ -82,8 +82,10 @@ public class CtrlFicheModifierProduit implements Initializable {
 			Produit produit = new Produit(getSelectedId(), nom, description, tarif, "visuel", itemCategorie.getId());
 
 			try {
-				daoLM.getProduitDAO().update(produit);
-				// daoMySQL.getProduitDAO().create(produit);
+				if (i == 0)
+					daoMySQL.getProduitDAO().update(produit);
+				else if (i == 1)
+					daoLM.getProduitDAO().update(produit);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -102,9 +104,13 @@ public class CtrlFicheModifierProduit implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		DAOFactory dao = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
+		DAOFactory daoSQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
 		try {
-			this.cbxCategorie.setItems(FXCollections.observableArrayList(dao.getCategorieDAO().findAll()));
+			if (i == 0)
+				cbxCategorie.setItems(FXCollections.observableArrayList(daoLM.getCategorieDAO().findAll()));
+			else if (i == 1)
+				cbxCategorie.setItems(FXCollections.observableArrayList(daoSQL.getCategorieDAO().findAll()));
 		} catch (Exception e) {
 			System.out.println("Probleme avec la ChoiceBox");
 			e.printStackTrace();
@@ -129,6 +135,11 @@ public class CtrlFicheModifierProduit implements Initializable {
 	// retourne l'id du produit selectionne
 	public int getSelectedId() {
 		return setSelectedId(id);
+	}
+
+	// Permet de set le bon index de la choice box de persistance
+	public void setIndexPersistance(int i) {
+		this.i = i;
 	}
 
 }

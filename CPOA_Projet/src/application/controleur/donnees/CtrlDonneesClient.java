@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.controleur.CtrlDetailAdresseClient;
+import application.controleur.fiche.CtrlFicheClient;
 import application.controleur.modifier.CtrlFicheModifierClient;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
@@ -26,6 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -55,6 +57,11 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	@FXML
 	private TextField txtRechNomPrenom;
 
+	@FXML
+	private ChoiceBox<String> cbxPersistance;
+
+	private ObservableList<String> persistance = FXCollections.observableArrayList("MySQL", "Liste memoire");
+
 	private final ObservableList<Client> liste = FXCollections.observableArrayList();
 
 	@Override
@@ -64,12 +71,27 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		colNom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
 		colPrenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
 
+		// Persistance
 		try {
-			tabViewClient.getItems()
-					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll());
-		} catch (SQLException e) {
-			e.getMessage();
+			cbxPersistance.setItems(persistance);
+		} catch (Exception e) {
+			System.out.println("Probleme avec la ChoiceBox");
+			e.printStackTrace();
 		}
+
+		cbxPersistance.getSelectionModel().selectFirst();
+
+		if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
+			refresh();
+		else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+			refresh();
+
+		cbxPersistance.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
+				refresh();
+			else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+				refresh();
+		});
 
 		btnSupprimer.setDisable(true);
 		btnModifier.setDisable(true);
@@ -99,6 +121,10 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
 			Parent root = fxmlLoader.load();
 
+			// Appelle du controleur de la fiche ajouter
+			CtrlFicheClient controleur = fxmlLoader.getController();
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
+
 			Stage stage = new Stage();
 
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -122,6 +148,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 			// Appelle du controleur de la fiche modifier
 			CtrlFicheModifierClient controleur = fxmlLoader.getController();
 
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
 			// Initialisation des composants avec les donn�es de la ligne r�cup�rer
 			controleur.initDonnees(tabViewClient.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewClient().getSelectionModel().getSelectedItem().getId());
@@ -150,8 +177,13 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 		Client client = tabViewClient.getSelectionModel().getSelectedItem();
 		if (result.get() == ButtonType.OK) {
 			try {
-				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().delete(client);
-				refresh();
+				if (getCbxPersistanceIndex() == 0) {
+					DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getClientDAO().delete(client);
+					refresh();
+				} else if (getCbxPersistanceIndex() == 1) {
+					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().delete(client);
+					refresh();
+				}
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -242,14 +274,24 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	private void refresh() {
 		FilteredList<Client> clientFiltre = null;
 		try {
-			clientFiltre = new FilteredList<Client>(FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
-					.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll()));
+			if (getCbxPersistanceIndex() == 0)
+				clientFiltre = new FilteredList<Client>(FXCollections.observableArrayList(
+						dao.factory.MySQLDAOFactory.getDAOFactory(dao.Persistance.MYSQL).getClientDAO().findAll()));
+			else if (getCbxPersistanceIndex() == 1)
+				clientFiltre = new FilteredList<Client>(
+						FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
+								.getDAOFactory(dao.Persistance.ListeMemoire).getClientDAO().findAll()));
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		SortedList<Client> sortedData = new SortedList<>(clientFiltre);
 		tabViewClient.setItems(sortedData);
 		tabViewClient.refresh();
+	}
+
+	public int getCbxPersistanceIndex() {
+		return cbxPersistance.getSelectionModel().getSelectedIndex();
 	}
 
 }

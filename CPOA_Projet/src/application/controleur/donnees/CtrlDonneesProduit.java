@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.controleur.CtrlDetailProduit;
+import application.controleur.fiche.CtrlFicheProduit;
 import application.controleur.modifier.CtrlFicheModifierProduit;
 import dao.factory.DAOFactory;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -27,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
@@ -64,6 +66,11 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	@FXML
 	private TextField txtRechNom;
 
+	@FXML
+	private ChoiceBox<String> cbxPersistance;
+
+	private ObservableList<String> persistance = FXCollections.observableArrayList("MySQL", "Liste memoire");
+
 	private final ObservableList<Produit> liste = FXCollections.observableArrayList();
 
 	@Override
@@ -87,12 +94,27 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			}
 		});
 
+		// Persistance
 		try {
-			tabViewProduit.getItems()
-					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll());
-		} catch (SQLException e) {
-			e.getMessage();
+			cbxPersistance.setItems(persistance);
+		} catch (Exception e) {
+			System.out.println("Probleme avec la ChoiceBox");
+			e.printStackTrace();
 		}
+
+		cbxPersistance.getSelectionModel().selectFirst();
+
+		if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
+			refresh();
+		else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+			refresh();
+
+		cbxPersistance.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
+				refresh();
+			else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+				refresh();
+		});
 
 		btnSupprimer.setDisable(true);
 		btnModifier.setDisable(true);
@@ -128,6 +150,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			// Initialisation des composants avec les donn�es de la ligne r�cup�rer
 			controleur.initDonnees(tabViewProduit.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewProduit().getSelectionModel().getSelectedItem().getId());
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
 
 			Stage stage = new Stage();
 
@@ -138,7 +161,6 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 
 			refresh();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -150,6 +172,10 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
 			Parent root = fxmlLoader.load();
 
+			// Appelle du controleur de la fiche ajouter
+			CtrlFicheProduit controleur = fxmlLoader.getController();
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
+
 			Stage stage = new Stage();
 
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -159,7 +185,6 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 
 			refresh();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -174,8 +199,13 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		Produit produit = tabViewProduit.getSelectionModel().getSelectedItem();
 		if (result.get() == ButtonType.OK) {
 			try {
-				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().delete(produit);
-				refresh();
+				if (getCbxPersistanceIndex() == 0) {
+					DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getProduitDAO().delete(produit);
+					refresh();
+				} else if (getCbxPersistanceIndex() == 1) {
+					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().delete(produit);
+					refresh();
+				}
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -271,15 +301,23 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	private void refresh() {
 		FilteredList<Produit> produitFiltre = null;
 		try {
-			produitFiltre = new FilteredList<Produit>(
-					FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
-							.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll()));
+			if (getCbxPersistanceIndex() == 0)
+				produitFiltre = new FilteredList<Produit>(FXCollections.observableArrayList(
+						dao.factory.MySQLDAOFactory.getDAOFactory(dao.Persistance.MYSQL).getProduitDAO().findAll()));
+			else if (getCbxPersistanceIndex() == 1)
+				produitFiltre = new FilteredList<Produit>(
+						FXCollections.observableArrayList(dao.factory.ListeMemoireDAOFactory
+								.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().findAll()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		SortedList<Produit> sortedData = new SortedList<>(produitFiltre);
 		tabViewProduit.setItems(sortedData);
 		tabViewProduit.refresh();
+	}
+
+	public int getCbxPersistanceIndex() {
+		return cbxPersistance.getSelectionModel().getSelectedIndex();
 	}
 
 }

@@ -31,6 +31,8 @@ public class CtrlFicheCategorie {
 	@FXML
 	private Label labelCategorie;
 
+	private int i;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
@@ -75,8 +77,11 @@ public class CtrlFicheCategorie {
 			this.labelCategorie.setTextFill(Color.BLACK);
 			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
 			try {
-				daoLM.getCategorieDAO().create(categ);
-				// daoMySQL.getProduitDAO().create(produit);
+				if (i == 1) {
+					daoLM.getCategorieDAO().create(categ);
+				} else if (i == 0) {
+					daoMySQL.getCategorieDAO().create(categ);
+				}
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -96,6 +101,11 @@ public class CtrlFicheCategorie {
 		alert.setTitle("Doublon");
 		alert.setContentText("Ce nom de categorie existe deja");
 		alert.show();
+	}
+
+	// Permet de set le bon index de la choice box de persistance
+	public void setIndexPersistance(int i) {
+		this.i = i;
 	}
 
 }

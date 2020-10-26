@@ -85,7 +85,7 @@ public class ListeMemoireProduitDAO implements ProduitDAO {
 		// Ne fonctionne que si l'objet m�tier est bien fait...
 		int idx = this.donnees.indexOf(new Produit(id));
 		if (idx == -1) {
-			throw new IllegalArgumentException("Aucun produit ne poss�de cet identifiant");
+			throw new IllegalArgumentException("Aucun produit ne possede cet identifiant");
 		} else {
 			return this.donnees.get(idx);
 		}

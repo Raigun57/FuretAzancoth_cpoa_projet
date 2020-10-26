@@ -222,6 +222,7 @@ public class CtrlDonneesCommande implements Initializable, ChangeListener<Comman
 
 					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
 					controleur.initDonnees(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
+					controleur.setId(tabViewCommande.getSelectionModel().getSelectedItem().getIdCommande());
 
 					stage.initModality(Modality.APPLICATION_MODAL);
 					stage.setTitle(

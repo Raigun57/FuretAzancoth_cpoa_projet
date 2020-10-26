@@ -2,6 +2,8 @@ package application.controleur.fiche;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import application.controleur.donnees.CtrlDonneesLigneCommande;
@@ -20,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import metier.Commande;
 import metier.LigneCommande;
 import metier.Produit;
 
@@ -27,8 +30,6 @@ public class CtrlFicheLigneCommande implements Initializable {
 
 	@FXML
 	private TextField txtQuantite;
-	@FXML
-	private TextField txtTarif;
 	@FXML
 	private ChoiceBox<Produit> cbxProduit;
 	@FXML
@@ -38,29 +39,22 @@ public class CtrlFicheLigneCommande implements Initializable {
 	@FXML
 	private Button btnRetour;
 
+	private int id;
+
 	@FXML
 	public void valider() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
 		DAOFactory daoMySQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
 
 		int quantite = 0;
-		Double tarif = (double) 0;
-
 		Produit itemProduit = cbxProduit.getSelectionModel().getSelectedItem();
+		Double tarif = cbxProduit.getSelectionModel().getSelectedItem().getTarif();
 		boolean ok = true;
 
 		try {
 			quantite = Integer.parseInt(txtQuantite.getText().trim());
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelLigneCommande.setText("La quantite n'est pas numerique ou la quantite est vide");
-			this.labelLigneCommande.setTextFill(Color.RED);
-			ok = false;
-		}
-
-		try {
-			tarif = Double.parseDouble(txtTarif.getText().trim());
-		} catch (NumberFormatException | NullPointerException e) {
-			this.labelLigneCommande.setText("Le tarif n'est pas numerique ou le tarif est vide");
 			this.labelLigneCommande.setTextFill(Color.RED);
 			ok = false;
 		}
@@ -89,10 +83,32 @@ public class CtrlFicheLigneCommande implements Initializable {
 		}
 
 		if (ok == true) {
-			LigneCommande ligneCommande = new LigneCommande(itemProduit.getId(), quantite, tarif);
+			LigneCommande lc = new LigneCommande(itemProduit.getId(), quantite, tarif);
 			try {
-				daoLM.getLigneCommandeDAO().create(ligneCommande);
-				// daoMySQL.getCommandeDAO().create(produit);
+				daoLM.getLigneCommandeDAO().create(lc);
+
+				Commande commande = null;
+				commande = dao.factory.DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO()
+						.getById(id);
+
+				HashMap<Produit, LigneCommande> map = dao.factory.DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire)
+						.getCommandeDAO().getById(id).getListeLigneCommande();
+
+				for (Map.Entry mapentry : map.entrySet()) {
+					Commande c = new Commande(commande.getIdCommande(), commande.getDate(), commande.getIdClient(),
+							map);
+					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCommandeDAO().update(c);
+
+					URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesLigneCommande.fxml");
+					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+					Parent root = fxmlLoader.load();
+
+					CtrlDonneesLigneCommande controleur = fxmlLoader.getController();
+
+					// controleur.getTabViewLigneCommande().getItems().add(lc);
+				}
+
+				// daoMySQL.getLigneCommandeDAO().create(ligneCommande);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -126,6 +142,10 @@ public class CtrlFicheLigneCommande implements Initializable {
 		alert.setContentText(
 				"Vous avez rentré un produit qui existe deja. Cela signifie que cette ligne de commande est deja existante.");
 		alert.show();
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

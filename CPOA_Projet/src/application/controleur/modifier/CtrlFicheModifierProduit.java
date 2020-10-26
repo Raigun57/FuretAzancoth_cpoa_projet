@@ -1,6 +1,7 @@
 package application.controleur.modifier;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.Persistance;
@@ -128,8 +129,16 @@ public class CtrlFicheModifierProduit implements Initializable {
 		txtDescription.setText(p.getDescription());
 		Double tarif = p.getTarif();
 		txtTarif.setText(tarif.toString());
-		cbxCategorie.getSelectionModel().select(p.getIdCateg() - 1); // On doit enlever 1 sinon l'index n'est pas
-																		// equivalent a l'objet selectionné
+		try {
+			if (i == 0)
+				cbxCategorie.setValue(
+						DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().getById(p.getIdCateg()));
+			else if (i == 1)
+				cbxCategorie.setValue(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO()
+						.getById(p.getIdCateg()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// set l'id du produit selectionne dans la table

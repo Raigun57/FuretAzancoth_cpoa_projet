@@ -203,28 +203,52 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 
 	@FXML
 	public void suppCategorie() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Suppression d'une categorie");
-		alert.setContentText("Voulez vous vraiment supprimer ce categorie ?");
-		Optional<ButtonType> result = alert.showAndWait();
+		DAOFactory daoLM = DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire);
+		DAOFactory daoSQL = DAOFactory.getDAOFactory(dao.Persistance.MYSQL);
+
+		/*
+		 * URL fxmlURL = getClass().getResource("/fxml/donnees/DonneesProduit.fxml");
+		 * FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
+		 * 
+		 * try { Parent root = fxmlLoader.load(); } catch (IOException e1) {
+		 * e1.printStackTrace(); }
+		 * 
+		 * CtrlDonneesProduit controleur = fxmlLoader.getController(); Categorie categ =
+		 * tabViewCategorie.getSelectionModel().getSelectedItem(); int idCateg =
+		 * categ.getId(); boolean ok = true;
+		 * 
+		 * if (getCbxPersistanceIndex() == 0) { for (int i = 0; i <
+		 * controleur.getIdCateg().size(); i++) {
+		 * //controleur.setCbxPersistanceIndex(0); int prod =
+		 * controleur.getIdCateg().get(i); if (idCateg == prod) { ok = false;
+		 * alerteSuppCascade(); } } } else if (getCbxPersistanceIndex() == 1) {
+		 * //controleur.setCbxPersistanceIndex(1); for (int i = 0; i <
+		 * controleur.getIdCateg().size(); i++) { int prod =
+		 * controleur.getIdCateg().get(i); if (idCateg == prod) { ok = false;
+		 * alerteSuppCascade(); } } }
+		 */
 
 		Categorie categ = tabViewCategorie.getSelectionModel().getSelectedItem();
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Suppression d'une categorie");
+		alert.setContentText("Voulez vous vraiment supprimer cette categorie ?");
+		Optional<ButtonType> result = alert.showAndWait();
+
 		if (result.get() == ButtonType.OK) {
 			try {
 				if (getCbxPersistanceIndex() == 1) {
-					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().delete(categ);
+					daoLM.getCategorieDAO().delete(categ);
 					// Vide la table de donnees
 					tabViewCategorie.getItems().clear();
 					// Rerempli la table de donnees
-					tabViewCategorie.getItems()
-							.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+					tabViewCategorie.getItems().addAll(daoLM.getCategorieDAO().findAll());
 				} else if (getCbxPersistanceIndex() == 0) {
-					DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().delete(categ);
+					daoSQL.getCategorieDAO().delete(categ);
 					// Vide la table de donnees
 					tabViewCategorie.getItems().clear();
 					// Rerempli la table de donnees
-					tabViewCategorie.getItems()
-							.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+					tabViewCategorie.getItems().addAll(daoSQL.getCategorieDAO().findAll());
 				}
 			} catch (SQLException e) {
 				e.getMessage();
@@ -257,6 +281,13 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 
 	private int getCbxPersistanceIndex() {
 		return cbxPersistance.getSelectionModel().getSelectedIndex();
+	}
+
+	private void alerteSuppCascade() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Suppression d'une categorie utilisée dans un produit");
+		alert.setContentText("Vous ne pouvez pas supprimer cette categorie car elle utilisée dans un produit");
+		alert.show();
 	}
 
 }

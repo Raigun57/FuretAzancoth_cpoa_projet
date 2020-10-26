@@ -175,6 +175,7 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 			// Appelle du controleur de la fiche ajouter
 			CtrlFicheProduit controleur = fxmlLoader.getController();
 			controleur.setIndexPersistance(getCbxPersistanceIndex());
+			controleur.initDonnees();
 
 			Stage stage = new Stage();
 
@@ -196,14 +197,18 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		alert.setContentText("Voulez vous vraiment supprimer ce produit ?");
 		Optional<ButtonType> result = alert.showAndWait();
 
+		DAOFactory daoSQL = DAOFactory.getDAOFactory(dao.Persistance.MYSQL);
+		DAOFactory daoLM = DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire);
+
 		Produit produit = tabViewProduit.getSelectionModel().getSelectedItem();
 		if (result.get() == ButtonType.OK) {
+
 			try {
 				if (getCbxPersistanceIndex() == 0) {
-					DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getProduitDAO().delete(produit);
+					daoSQL.getProduitDAO().delete(produit);
 					refresh();
 				} else if (getCbxPersistanceIndex() == 1) {
-					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getProduitDAO().delete(produit);
+					daoLM.getProduitDAO().delete(produit);
 					refresh();
 				}
 			} catch (SQLException e) {
@@ -272,7 +277,6 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 	}
 
 	private void filtre() {
-
 		liste.addAll(tabViewProduit.getItems());
 		FilteredList<Produit> produitFiltre = new FilteredList<Produit>(liste);
 

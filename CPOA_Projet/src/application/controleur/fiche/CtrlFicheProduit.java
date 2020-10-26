@@ -2,7 +2,6 @@ package application.controleur.fiche;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
 
 import application.controleur.donnees.CtrlDonneesProduit;
 import dao.Persistance;
@@ -10,7 +9,6 @@ import dao.factory.DAOFactory;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -24,7 +22,7 @@ import javafx.stage.Stage;
 import metier.Categorie;
 import metier.Produit;
 
-public class CtrlFicheProduit implements Initializable {
+public class CtrlFicheProduit {
 
 	@FXML
 	private TextField txtNom;
@@ -120,27 +118,26 @@ public class CtrlFicheProduit implements Initializable {
 
 	}
 
-	// Ferme la boite de dialogue
-	@FXML
-	public void retour() {
-		Stage stage = (Stage) btnRetour.getScene().getWindow();
-		stage.close();
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initDonnees() {
 		DAOFactory daoLM = DAOFactory.getDAOFactory(Persistance.ListeMemoire);
 		DAOFactory daoSQL = DAOFactory.getDAOFactory(Persistance.MYSQL);
 
 		try {
 			if (i == 0)
-				cbxCategorie.setItems(FXCollections.observableArrayList(daoLM.getCategorieDAO().findAll()));
-			else if (i == 1)
 				cbxCategorie.setItems(FXCollections.observableArrayList(daoSQL.getCategorieDAO().findAll()));
+			else if (i == 1)
+				cbxCategorie.setItems(FXCollections.observableArrayList(daoLM.getCategorieDAO().findAll()));
 		} catch (Exception e) {
 			System.out.println("Probleme avec la ChoiceBox");
 			e.printStackTrace();
 		}
+	}
+
+	// Ferme la boite de dialogue
+	@FXML
+	public void retour() {
+		Stage stage = (Stage) btnRetour.getScene().getWindow();
+		stage.close();
 	}
 
 	public void alerteDoublon() {

@@ -215,7 +215,7 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 	private void detail() {
 		tabViewClient.setOnMouseClicked(event -> {
 			if (tabViewClient.getSelectionModel().getSelectedItem() != null && event.getClickCount() == 2) {
-
+				
 				try {
 					URL fxmlURL = getClass().getResource("/fxml/DetailAdresseClient.fxml");
 					FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);

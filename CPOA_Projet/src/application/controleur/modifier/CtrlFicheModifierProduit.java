@@ -68,6 +68,11 @@ public class CtrlFicheModifierProduit implements Initializable {
 
 		try {
 			tarif = Double.parseDouble(txtTarif.getText().trim());
+			if (tarif < 0) {
+				this.labelProduit.setText("Le tarif ne peut pas être négatif");
+				this.labelProduit.setTextFill(Color.RED);
+				ok = false;
+			}
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelProduit.setText("Le tarif n'est pas numerique ou le tarif est vide");
 			this.labelProduit.setTextFill(Color.RED);

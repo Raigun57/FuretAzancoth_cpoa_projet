@@ -81,9 +81,13 @@ public class CtrlFicheModifierClient {
 
 		try {
 			numero = Integer.parseInt(txtNumero.getText().trim());
+			if (numero <= 0) {
+				this.labelClient.setText("Le numéro ne peut pas être négatif ou nul");
+				this.labelClient.setTextFill(Color.RED);
+				ok = false;
+			}
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelClient.setText("Le numero n'est pas numerique ou le numero est vide");
-			this.labelClient.setText(e.getMessage());
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
@@ -96,9 +100,13 @@ public class CtrlFicheModifierClient {
 
 		try {
 			codePostal = Integer.parseInt(txtCodePostal.getText().trim());
+			if (codePostal <= 0) {
+				this.labelClient.setText("Le code postal ne peut pas être négatif ou nul");
+				this.labelClient.setTextFill(Color.RED);
+				ok = false;
+			}
 		} catch (NumberFormatException | NullPointerException e) {
 			this.labelClient.setText("Le code postal n'est pas numerique ou le code postal est vide");
-			this.labelClient.setText(e.getMessage());
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}

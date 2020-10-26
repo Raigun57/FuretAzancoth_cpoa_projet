@@ -1,4 +1,4 @@
-package application.controleur.donnees;
+	package application.controleur.donnees;
 
 import java.io.IOException;
 import java.net.URL;
@@ -111,7 +111,6 @@ public class CtrlDonneesClient implements Initializable, ChangeListener<Client> 
 
 		detail();
 		filtre();
-
 	}
 
 	@FXML

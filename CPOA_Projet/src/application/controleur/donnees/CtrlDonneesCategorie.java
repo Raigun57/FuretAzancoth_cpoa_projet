@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.controleur.fiche.CtrlFicheCategorie;
 import application.controleur.modifier.CtrlFicheModifierCategorie;
 import dao.factory.DAOFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -46,6 +50,10 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	private Button btnModifier;
 	@FXML
 	private Button btnSupprimer;
+	@FXML
+	private ChoiceBox<String> cbxPersistance;
+
+	private ObservableList<String> persistance = FXCollections.observableArrayList("MySQL", "Liste memoire");
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,12 +62,43 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		colNom.setCellValueFactory(new PropertyValueFactory<Categorie, String>("titre"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Categorie, String>("visuel"));
 
+		// Persistance
 		try {
-			tabViewCategorie.getItems()
-					.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+			cbxPersistance.setItems(persistance);
+		} catch (Exception e) {
+			System.out.println("Probleme avec la ChoiceBox");
+			e.printStackTrace();
+		}
+
+		cbxPersistance.getSelectionModel().selectFirst();
+
+		try {
+			if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0)
+				tabViewCategorie.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+			else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1)
+				tabViewCategorie.getItems()
+						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+
 		} catch (SQLException e) {
 			e.getMessage();
 		}
+
+		cbxPersistance.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			try {
+				if (cbxPersistance.getSelectionModel().getSelectedIndex() == 1) {
+					tabViewCategorie.getItems().clear();
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				} else if (cbxPersistance.getSelectionModel().getSelectedIndex() == 0) {
+					tabViewCategorie.getItems().clear();
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+				}
+			} catch (SQLException e) {
+				e.getMessage();
+			}
+		});
 
 		btnSupprimer.setDisable(true);
 		btnModifier.setDisable(true);
@@ -86,6 +125,9 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL);
 			Parent root = fxmlLoader.load();
 
+			CtrlFicheCategorie controleur = fxmlLoader.getController();
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
+
 			Stage stage = new Stage();
 
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -94,11 +136,19 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
 			try {
-				// Vide la table de donnees
-				tabViewCategorie.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCategorie.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				if (getCbxPersistanceIndex() == 1) {
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				} else if (getCbxPersistanceIndex() == 0) {
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -120,6 +170,7 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			// Initialisation des composants avec les donn�es de la ligne r�cup�rer
 			controleur.initDonnees(tabViewCategorie.getSelectionModel().getSelectedItem());
 			controleur.setSelectedId(getTabViewCategorie().getSelectionModel().getSelectedItem().getId());
+			controleur.setIndexPersistance(getCbxPersistanceIndex());
 
 			Stage stage = new Stage();
 
@@ -129,17 +180,23 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 			stage.showAndWait(); // Permet, avec le code suivant, de rafraichir la table de donnees
 
 			try {
-				// Vide la table de donnees
-				tabViewCategorie.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCategorie.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				if (getCbxPersistanceIndex() == 1) {
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				} else if (getCbxPersistanceIndex() == 0) {
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -154,12 +211,21 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		Categorie categ = tabViewCategorie.getSelectionModel().getSelectedItem();
 		if (result.get() == ButtonType.OK) {
 			try {
-				DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().delete(categ);
-				// Vide la table de donnees
-				tabViewCategorie.getItems().clear();
-				// Rerempli la table de donnees
-				tabViewCategorie.getItems()
-						.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				if (getCbxPersistanceIndex() == 1) {
+					DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().delete(categ);
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire).getCategorieDAO().findAll());
+				} else if (getCbxPersistanceIndex() == 0) {
+					DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().delete(categ);
+					// Vide la table de donnees
+					tabViewCategorie.getItems().clear();
+					// Rerempli la table de donnees
+					tabViewCategorie.getItems()
+							.addAll(DAOFactory.getDAOFactory(dao.Persistance.MYSQL).getCategorieDAO().findAll());
+				}
 			} catch (SQLException e) {
 				e.getMessage();
 			}
@@ -187,6 +253,10 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 	// table en privee
 	public TableView<Categorie> getTabViewCategorie() {
 		return tabViewCategorie;
+	}
+
+	private int getCbxPersistanceIndex() {
+		return cbxPersistance.getSelectionModel().getSelectedIndex();
 	}
 
 }

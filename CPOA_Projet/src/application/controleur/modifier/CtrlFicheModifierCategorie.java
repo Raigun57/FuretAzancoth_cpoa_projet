@@ -23,7 +23,7 @@ public class CtrlFicheModifierCategorie {
 	@FXML
 	private Label labelCategorie;
 
-	private int id;
+	private int id, i;
 
 	@FXML
 	public void valider() {
@@ -53,8 +53,10 @@ public class CtrlFicheModifierCategorie {
 			Categorie categ = new Categorie(getSelectedId(), nomCategorie, visuelCategorie);
 
 			try {
-				daoLM.getCategorieDAO().update(categ);
-				// daoMySQL.getProduitDAO().create(produit);
+				if (i == 0)
+					daoMySQL.getCategorieDAO().update(categ);
+				else if (i == 1)
+					daoLM.getCategorieDAO().update(categ);
 				Stage stage = (Stage) btnValider.getScene().getWindow();
 				stage.close();
 			} catch (Exception e) {
@@ -84,6 +86,11 @@ public class CtrlFicheModifierCategorie {
 	// retourne l'id de la categorie selectionnee
 	public int getSelectedId() {
 		return setSelectedId(id);
+	}
+
+	// Permet de set le bon index de la choice box de persistance
+	public void setIndexPersistance(int i) {
+		this.i = i;
 	}
 
 }

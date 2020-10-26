@@ -11,7 +11,7 @@ public class CtrlDetailProduit {
 	private Label labelDescription;
 	private ImageView visuelProduit;
 	// Methode qui place les donnees de l'adresse du client selectionne dans les
-	// labels
+	// labels et affiche le visuel
 	public void initDonnees(Produit p) {
 		labelDescription.setText(p.getDescription());
 		visuelProduit.setImage(p.getVisuel());

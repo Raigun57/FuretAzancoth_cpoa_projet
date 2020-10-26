@@ -84,6 +84,13 @@ public class CtrlFicheClient {
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
+		
+		if ( numero <= 0 )
+		{
+			this.labelClient.setText("Le numéro ne peut pas être négatif ou null");
+			this.labelClient.setTextFill(Color.RED);
+			ok = false;
+		}
 
 		try {
 			numero = Integer.parseInt(txtNumero.getText().trim());
@@ -93,8 +100,16 @@ public class CtrlFicheClient {
 			ok = false;
 		}
 
+		
 		if (rue.isEmpty()) {
 			this.labelClient.setText("La rue est vide");
+			this.labelClient.setTextFill(Color.RED);
+			ok = false;
+		}
+		
+		if ( codePostal < 0 )
+		{
+			this.labelClient.setText("Le code postal ne peut pas être négatif ou null");
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
@@ -106,6 +121,7 @@ public class CtrlFicheClient {
 			this.labelClient.setTextFill(Color.RED);
 			ok = false;
 		}
+		
 
 		if (ville.isEmpty()) {
 			this.labelClient.setText("La ville est vide");

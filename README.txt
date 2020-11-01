@@ -1,6 +1,6 @@
 # FuretAzancoth_cpoa_projet
 
-##Répartition des tâches
+##Répartition des tâches (voir projet Github)
 
 Azancoth Valentin: 60%
 Furet Alexandre : 40%

@@ -11,7 +11,6 @@ import application.controleur.CtrlDetailProduit;
 import application.controleur.fiche.CtrlFicheProduit;
 import application.controleur.modifier.CtrlFicheModifierProduit;
 import dao.factory.DAOFactory;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,7 +29,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -38,7 +36,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import metier.Produit;
 
 public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit> {
@@ -81,18 +78,16 @@ public class CtrlDonneesProduit implements Initializable, ChangeListener<Produit
 		colDescription.setCellValueFactory(new PropertyValueFactory<Produit, String>("description"));
 		colTarif.setCellValueFactory(new PropertyValueFactory<Produit, Double>("tarif"));
 		colVisuel.setCellValueFactory(new PropertyValueFactory<Produit, String>("visuel"));
-		colIdCateg.setCellValueFactory(new Callback<CellDataFeatures<Produit, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(CellDataFeatures<Produit, String> param) {
-				try {
-					return new ReadOnlyStringWrapper(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire)
-							.getCategorieDAO().getById(param.getValue().getIdCateg()).getTitre());
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-		});
+		/*
+		 * colIdCateg.setCellValueFactory(new Callback<CellDataFeatures<Produit,
+		 * String>, ObservableValue<String>>() {
+		 * 
+		 * @Override public ObservableValue<String> call(CellDataFeatures<Produit,
+		 * String> param) { try { return new
+		 * ReadOnlyStringWrapper(DAOFactory.getDAOFactory(dao.Persistance.ListeMemoire)
+		 * .getCategorieDAO().getById(param.getValue().getIdCateg()).getTitre()); }
+		 * catch (SQLException e) { e.printStackTrace(); } return null; } });
+		 */
 
 		// Persistance
 		try {

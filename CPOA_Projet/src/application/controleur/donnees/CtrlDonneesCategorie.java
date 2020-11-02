@@ -283,11 +283,13 @@ public class CtrlDonneesCategorie implements Initializable, ChangeListener<Categ
 		return cbxPersistance.getSelectionModel().getSelectedIndex();
 	}
 
-	private void alerteSuppCascade() {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Suppression d'une categorie utilisée dans un produit");
-		alert.setContentText("Vous ne pouvez pas supprimer cette categorie car elle utilisée dans un produit");
-		alert.show();
-	}
+	/*
+	 * private void alerteSuppCascade() { Alert alert = new
+	 * Alert(AlertType.WARNING);
+	 * alert.setTitle("Suppression d'une categorie utilisée dans un produit");
+	 * alert.
+	 * setContentText("Vous ne pouvez pas supprimer cette categorie car elle utilisée dans un produit"
+	 * ); alert.show(); }
+	 */
 
 }

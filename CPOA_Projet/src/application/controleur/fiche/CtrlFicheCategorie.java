@@ -73,8 +73,6 @@ public class CtrlFicheCategorie {
 		}
 
 		if (ok == true) {
-			this.labelCategorie.setText(txtNomCateg.getText().trim() + ", " + txtVisuelCateg.getText().trim());
-			this.labelCategorie.setTextFill(Color.BLACK);
 			Categorie categ = new Categorie(nomCategorie, visuelCategorie);
 			try {
 				if (i == 0)
